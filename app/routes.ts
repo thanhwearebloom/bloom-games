@@ -26,7 +26,7 @@ export default [
         ),
       ]),
     ]),
+    route("login", "routes/login.tsx", { id: "login" }),
+    route("logout", "routes/logout.tsx", { id: "logout" }),
   ]),
-  route("login", "routes/login.tsx", { id: "login" }),
-  route("logout", "routes/logout.tsx", { id: "logout" }),
 ] satisfies RouteConfig;

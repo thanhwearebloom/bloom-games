@@ -1,4 +1,4 @@
-import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { Outlet } from "react-router";
 import { redirect } from "react-router";
 import app from "~/firebase";
