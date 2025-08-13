@@ -23,11 +23,15 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   let user = auth.currentUser;
 
   if (!user) {
-    const result = await getRedirectResult(auth);
-    if (!result) {
+    if (!import.meta.env.DEV) {
+      const result = await getRedirectResult(auth);
+      if (!result) {
+        return redirect("/login");
+      }
+      user = result.user;
+    } else {
       return redirect("/login");
     }
-    user = result.user;
   }
 
   return {

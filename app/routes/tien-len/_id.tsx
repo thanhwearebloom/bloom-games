@@ -174,16 +174,18 @@ export default function TienLenId({ loaderData }: Route.ComponentProps) {
           {game.isActive && records.length > 0 && (
             <TableRow>
               <TableCell colSpan={5}>
-                <Form method="put">
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    variant={"destructive"}
-                    disabled={navigation.state === "submitting"}
-                  >
-                    End game
-                  </Button>
-                </Form>
+                {game.isActive && (
+                  <Form method="put">
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      variant={"destructive"}
+                      disabled={navigation.state === "submitting"}
+                    >
+                      End game
+                    </Button>
+                  </Form>
+                )}
               </TableCell>
             </TableRow>
           )}

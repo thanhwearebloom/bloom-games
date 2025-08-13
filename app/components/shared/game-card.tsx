@@ -21,17 +21,19 @@ export const GameCard: FC<{
     <Link to={href} className="block">
       <Card className="flex flex-row items-center gap-5 transition-all hover:shadow-2xl">
         <CardHeader className="grow">
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            {isActive ? (
+              <Badge className="text-lime-500" variant="secondary">
+                Active
+              </Badge>
+            ) : (
+              <Badge className="" variant="destructive">
+                Ended
+              </Badge>
+            )}
+            {title}
+          </CardTitle>
           {description && <CardDescription>{description}</CardDescription>}
-          {isActive ? (
-            <Badge className="text-lime-500" variant="secondary">
-              Active
-            </Badge>
-          ) : (
-            <Badge className="" variant="destructive">
-              Ended
-            </Badge>
-          )}
         </CardHeader>
         <CardFooter className="flex justify-end">
           <ChevronRight />

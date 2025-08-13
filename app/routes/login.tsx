@@ -1,12 +1,25 @@
-import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+} from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import { isRouteErrorResponse } from "react-router";
+import { isRouteErrorResponse, redirect } from "react-router";
 import type { Route } from "./+types/login";
 
 export async function clientLoader() {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  await signInWithRedirect(auth, provider);
+  if (import.meta.env.DEV) {
+    const result = await signInWithPopup(auth, provider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    if (!credential) {
+      throw new Error("No credential");
+    }
+    return redirect("/");
+  } else {
+    await signInWithRedirect(auth, provider);
+  }
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
