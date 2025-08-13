@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/__/auth",
-      "destination": "https://bloom-games.firebaseapp.com/__/auth"
-    }
-  ]
-}
