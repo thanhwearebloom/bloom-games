@@ -105,10 +105,22 @@ export async function clientAction({
 
 export default function TienLenId({ loaderData }: Route.ComponentProps) {
   const { game, records } = loaderData;
-  const sumPlayerA = records.reduce((acc, record) => acc + record.playerA, 0);
-  const sumPlayerB = records.reduce((acc, record) => acc + record.playerB, 0);
-  const sumPlayerC = records.reduce((acc, record) => acc + record.playerC, 0);
-  const sumPlayerD = records.reduce((acc, record) => acc + record.playerD, 0);
+  const sumPlayerA = records.reduce(
+    (acc, record) => acc + (record.playerA || 0),
+    0
+  );
+  const sumPlayerB = records.reduce(
+    (acc, record) => acc + (record.playerB || 0),
+    0
+  );
+  const sumPlayerC = records.reduce(
+    (acc, record) => acc + (record.playerC || 0),
+    0
+  );
+  const sumPlayerD = records.reduce(
+    (acc, record) => acc + (record.playerD || 0),
+    0
+  );
   const paybackInfo = payback({
     [game.settings?.playerA ?? ""]: sumPlayerA,
     [game.settings?.playerB ?? ""]: sumPlayerB,
@@ -132,16 +144,16 @@ export default function TienLenId({ loaderData }: Route.ComponentProps) {
         <TableCaption>{records.length} Records</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-wrap whitespace-pre-wrap">
+            <TableHead className="text-right text-wrap whitespace-pre-wrap">
               {game.settings?.playerA}
             </TableHead>
-            <TableHead className="text-wrap whitespace-pre-wrap bg-accent">
+            <TableHead className="text-right text-wrap whitespace-pre-wrap bg-accent">
               {game.settings?.playerB}
             </TableHead>
-            <TableHead className="text-wrap whitespace-pre-wrap">
+            <TableHead className="text-right text-wrap whitespace-pre-wrap">
               {game.settings?.playerC}
             </TableHead>
-            <TableHead className="text-wrap whitespace-pre-wrap bg-accent">
+            <TableHead className="text-right text-wrap whitespace-pre-wrap bg-accent">
               {game.settings?.playerD}
             </TableHead>
             <TableHead></TableHead>
@@ -171,7 +183,7 @@ export default function TienLenId({ loaderData }: Route.ComponentProps) {
             <TableCell className="text-right">{sumPlayerB}</TableCell>
             <TableCell className="text-right">{sumPlayerC}</TableCell>
             <TableCell className="text-right">{sumPlayerD}</TableCell>
-            <TableCell>SUM</TableCell>
+            <TableCell className="text-right">∑</TableCell>
           </TableRow>
           {game.isActive && records.length > 0 && (
             <TableRow>

@@ -84,7 +84,7 @@ export default function TienLenIndex({ loaderData }: Route.ComponentProps) {
       <TienLenFormCreate users={users} />
 
       <div className="space-y-3">
-        <h2 className="text-2xl font-bold">Recent games</h2>
+        <h2 className="text-lg font-semibold">Recent games</h2>
         <div className="text-sm text-slate-400">Latest 30 games</div>
         <div className="space-y-2">
           {games?.map((game) => (

@@ -12,9 +12,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BrushCleaning } from "lucide-react";
+import { InputVirtualKeyboard } from "../shared/input-virtual-keyboard";
 
 export const TienLenFormCreateRecordSchema = z
   .object({
@@ -79,44 +79,48 @@ export const TienLenFormCreateRecord: FC<{
   }, [watchA, watchB, watchC, watchD]);
 
   const blurHandler = useCallback(() => {
+    const playerA = form.getValues("playerA");
+    const playerB = form.getValues("playerB");
+    const playerC = form.getValues("playerC");
+    const playerD = form.getValues("playerD");
     // if 3 in 4 fields playerA/B/C/D are filled after focusing out, auto fill the remaning field
     if (
-      typeof watchA === "number" &&
-      typeof watchB === "number" &&
-      typeof watchC === "number" &&
-      typeof watchD === "number"
+      typeof playerA === "number" &&
+      typeof playerB === "number" &&
+      typeof playerC === "number" &&
+      typeof playerD === "number"
     ) {
       return;
     }
     if (
-      typeof watchA === "number" &&
-      typeof watchB === "number" &&
-      typeof watchC === "number"
+      typeof playerA === "number" &&
+      typeof playerB === "number" &&
+      typeof playerC === "number"
     ) {
-      form.setValue("playerD", 0 - (watchA + watchB + watchC));
+      form.setValue("playerD", 0 - (playerA + playerB + playerC));
     }
     if (
-      typeof watchA === "number" &&
-      typeof watchB === "number" &&
-      typeof watchD === "number"
+      typeof playerA === "number" &&
+      typeof playerB === "number" &&
+      typeof playerD === "number"
     ) {
-      form.setValue("playerC", 0 - (watchA + watchB + watchD));
+      form.setValue("playerC", 0 - (playerA + playerB + playerD));
     }
     if (
-      typeof watchA === "number" &&
-      typeof watchC === "number" &&
-      typeof watchD === "number"
+      typeof playerA === "number" &&
+      typeof playerC === "number" &&
+      typeof playerD === "number"
     ) {
-      form.setValue("playerB", 0 - (watchA + watchC + watchD));
+      form.setValue("playerB", 0 - (playerA + playerC + playerD));
     }
     if (
-      typeof watchB === "number" &&
-      typeof watchC === "number" &&
-      typeof watchD === "number"
+      typeof playerB === "number" &&
+      typeof playerC === "number" &&
+      typeof playerD === "number"
     ) {
-      form.setValue("playerA", 0 - (watchB + watchC + watchD));
+      form.setValue("playerA", 0 - (playerB + playerC + playerD));
     }
-  }, [form, watchA, watchB, watchC, watchD]);
+  }, [form]);
 
   const whiteWin = useCallback(
     (field: "playerA" | "playerB" | "playerC" | "playerD") => {
@@ -156,19 +160,10 @@ export const TienLenFormCreateRecord: FC<{
                   <FormItem>
                     <FormLabel>{playerA}</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value ? Number(e.target.value) : undefined
-                          )
-                        }
-                        onBlur={() => {
-                          field.onBlur();
-                          blurHandler();
-                        }}
-                        type="number"
+                      <InputVirtualKeyboard
+                        value={field.value}
+                        onChangeValue={field.onChange}
+                        onClose={blurHandler}
                       />
                     </FormControl>
                     <FormMessage />
@@ -192,19 +187,10 @@ export const TienLenFormCreateRecord: FC<{
                   <FormItem>
                     <FormLabel>{playerB}</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value ? Number(e.target.value) : undefined
-                          )
-                        }
-                        onBlur={() => {
-                          field.onBlur();
-                          blurHandler();
-                        }}
-                        type="number"
+                      <InputVirtualKeyboard
+                        value={field.value}
+                        onChangeValue={field.onChange}
+                        onClose={blurHandler}
                       />
                     </FormControl>
                     <FormMessage />
@@ -228,19 +214,10 @@ export const TienLenFormCreateRecord: FC<{
                   <FormItem>
                     <FormLabel>{playerC}</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value ? Number(e.target.value) : undefined
-                          )
-                        }
-                        onBlur={() => {
-                          field.onBlur();
-                          blurHandler();
-                        }}
-                        type="number"
+                      <InputVirtualKeyboard
+                        value={field.value}
+                        onChangeValue={field.onChange}
+                        onClose={blurHandler}
                       />
                     </FormControl>
                     <FormMessage />
@@ -264,19 +241,10 @@ export const TienLenFormCreateRecord: FC<{
                   <FormItem>
                     <FormLabel>{playerD}</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value ? Number(e.target.value) : undefined
-                          )
-                        }
-                        onBlur={() => {
-                          field.onBlur();
-                          blurHandler();
-                        }}
-                        type="number"
+                      <InputVirtualKeyboard
+                        value={field.value}
+                        onChangeValue={field.onChange}
+                        onClose={blurHandler}
                       />
                     </FormControl>
                     <FormMessage />
