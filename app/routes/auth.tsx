@@ -1,4 +1,4 @@
-import { getAuth } from "firebase/auth";
+import { getAuth, getRedirectResult } from "firebase/auth";
 import { Outlet } from "react-router";
 import { redirect } from "react-router";
 import app from "~/firebase";
@@ -20,10 +20,14 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const auth = getAuth();
 
   await auth.authStateReady();
-  const user = auth.currentUser;
+  let user = auth.currentUser;
 
   if (!user) {
-    return redirect("/login");
+    const result = await getRedirectResult(auth);
+    if (!result) {
+      return redirect("/login");
+    }
+    user = result.user;
   }
 
   return {

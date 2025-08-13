@@ -1,4 +1,8 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+} from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { isRouteErrorResponse, redirect } from "react-router";
 import type { Route } from "./+types/login";
@@ -6,17 +10,18 @@ import type { Route } from "./+types/login";
 export async function clientLoader() {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(auth, provider);
-  if (!result) {
-    throw new Error("No login result");
-  }
-  const credential = GoogleAuthProvider.credentialFromResult(result);
-  if (!credential) {
-    throw new Error("No credential");
-  }
-  const token = credential.accessToken;
-  const user = result.user;
-  return redirect("/");
+  // const result = await signInWithPopup(auth, provider);
+  // if (!result) {
+  //   throw new Error("No login result");
+  // }
+  // const credential = GoogleAuthProvider.credentialFromResult(result);
+  // if (!credential) {
+  //   throw new Error("No credential");
+  // }
+  // const token = credential.accessToken;
+  // const user = result.user;
+  // return redirect("/");
+  await signInWithRedirect(auth, provider);
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
