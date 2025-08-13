@@ -17,7 +17,7 @@ export default function Logout({ loaderData }: Route.ComponentProps) {
       <Await resolve={signOutPromise}>
         <div className="flex items-center justify-center h-screen">
           <Button asChild>
-            <Link to="/login">Login</Link>
+            <Link to="/">Back to Home</Link>
           </Button>
         </div>
       </Await>
