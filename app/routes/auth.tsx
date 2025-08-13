@@ -19,17 +19,8 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const appName = app.name;
   const auth = getAuth();
 
-  console.log("wait for user");
-  const user = await new Promise<User | null>((resolve, reject) => {
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        reject("No user logged in");
-        return redirect("/login");
-      }
-      resolve(user);
-    });
-  });
-  console.log(user);
+  await auth.authStateReady();
+  const user = auth.currentUser;
 
   if (!user) {
     return redirect("/login");
