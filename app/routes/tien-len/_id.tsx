@@ -155,10 +155,12 @@ export default function TienLenId({ loaderData }: Route.ComponentProps) {
               <TableCell className="text-right">{record.playerC}</TableCell>
               <TableCell className="text-right">{record.playerD}</TableCell>
               <TableCell>
-                <TienLenDeleteRecord
-                  id={game.id ?? ""}
-                  recordId={record.id ?? ""}
-                />
+                {game.isActive && (
+                  <TienLenDeleteRecord
+                    id={game.id ?? ""}
+                    recordId={record.id ?? ""}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}
@@ -174,18 +176,16 @@ export default function TienLenId({ loaderData }: Route.ComponentProps) {
           {game.isActive && records.length > 0 && (
             <TableRow>
               <TableCell colSpan={5}>
-                {game.isActive && (
-                  <Form method="put">
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      variant={"destructive"}
-                      disabled={navigation.state === "submitting"}
-                    >
-                      End game
-                    </Button>
-                  </Form>
-                )}
+                <Form method="put">
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    variant={"destructive"}
+                    disabled={navigation.state === "submitting"}
+                  >
+                    End game
+                  </Button>
+                </Form>
               </TableCell>
             </TableRow>
           )}
