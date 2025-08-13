@@ -1,0 +1,233 @@
+{
+  "buildManifest": {
+    "serverBundles": {
+      "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0": {
+        "id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+        "file": "build/server/nodejs_eyJydW50aW1lIjoibm9kZWpzIn0/index.js",
+        "config": {
+          "runtime": "nodejs"
+        }
+      }
+    },
+    "routeIdToServerBundleId": {
+      "root": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/home": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/tien-len/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "tien-len-id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "tien-len-id-record-id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "login": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "logout": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
+    },
+    "routes": {
+      "root": {
+        "id": "root",
+        "file": "app/root.tsx",
+        "path": "",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "auth": {
+        "id": "auth",
+        "parentId": "root",
+        "file": "app/routes/auth.tsx",
+        "config": {}
+      },
+      "app-shell": {
+        "id": "app-shell",
+        "parentId": "auth",
+        "file": "app/routes/app-shell.tsx",
+        "config": {}
+      },
+      "routes/home": {
+        "id": "routes/home",
+        "parentId": "app-shell",
+        "file": "app/routes/home.tsx",
+        "index": true,
+        "config": {}
+      },
+      "routes/tien-len/tien-len": {
+        "id": "routes/tien-len/tien-len",
+        "parentId": "app-shell",
+        "file": "app/routes/tien-len/tien-len.tsx",
+        "path": "tien-len",
+        "config": {}
+      },
+      "routes/tien-len/index": {
+        "id": "routes/tien-len/index",
+        "parentId": "routes/tien-len/tien-len",
+        "file": "app/routes/tien-len/index.tsx",
+        "index": true,
+        "config": {}
+      },
+      "tien-len-id": {
+        "id": "tien-len-id",
+        "parentId": "routes/tien-len/tien-len",
+        "file": "app/routes/tien-len/_id.tsx",
+        "path": ":id",
+        "config": {}
+      },
+      "tien-len-id-record-id": {
+        "id": "tien-len-id-record-id",
+        "parentId": "tien-len-id",
+        "file": "app/routes/tien-len/_id_record-id.tsx",
+        "path": "records/:recordId",
+        "config": {}
+      },
+      "login": {
+        "id": "login",
+        "parentId": "auth",
+        "file": "app/routes/login.tsx",
+        "path": "login",
+        "config": {}
+      },
+      "logout": {
+        "id": "logout",
+        "parentId": "auth",
+        "file": "app/routes/logout.tsx",
+        "path": "logout",
+        "config": {}
+      }
+    }
+  },
+  "reactRouterConfig": {
+    "appDirectory": "/Users/thanh/Projects/personal/bloom-games-v2/app",
+    "basename": "/",
+    "buildDirectory": "/Users/thanh/Projects/personal/bloom-games-v2/build",
+    "future": {
+      "unstable_middleware": false,
+      "unstable_optimizeDeps": false,
+      "unstable_splitRouteModules": false,
+      "unstable_subResourceIntegrity": false,
+      "unstable_viteEnvironmentApi": false
+    },
+    "routes": {
+      "root": {
+        "id": "root",
+        "file": "root.tsx",
+        "path": ""
+      },
+      "auth": {
+        "id": "auth",
+        "parentId": "root",
+        "file": "routes/auth.tsx"
+      },
+      "app-shell": {
+        "id": "app-shell",
+        "parentId": "auth",
+        "file": "routes/app-shell.tsx"
+      },
+      "routes/home": {
+        "id": "routes/home",
+        "parentId": "app-shell",
+        "file": "routes/home.tsx",
+        "index": true
+      },
+      "routes/tien-len/tien-len": {
+        "id": "routes/tien-len/tien-len",
+        "parentId": "app-shell",
+        "file": "routes/tien-len/tien-len.tsx",
+        "path": "tien-len"
+      },
+      "routes/tien-len/index": {
+        "id": "routes/tien-len/index",
+        "parentId": "routes/tien-len/tien-len",
+        "file": "routes/tien-len/index.tsx",
+        "index": true
+      },
+      "tien-len-id": {
+        "id": "tien-len-id",
+        "parentId": "routes/tien-len/tien-len",
+        "file": "routes/tien-len/_id.tsx",
+        "path": ":id"
+      },
+      "tien-len-id-record-id": {
+        "id": "tien-len-id-record-id",
+        "parentId": "tien-len-id",
+        "file": "routes/tien-len/_id_record-id.tsx",
+        "path": "records/:recordId"
+      },
+      "login": {
+        "id": "login",
+        "parentId": "auth",
+        "file": "routes/login.tsx",
+        "path": "login"
+      },
+      "logout": {
+        "id": "logout",
+        "parentId": "auth",
+        "file": "routes/logout.tsx",
+        "path": "logout"
+      }
+    },
+    "routeDiscovery": {
+      "mode": "lazy",
+      "manifestPath": "/__manifest"
+    },
+    "serverBuildFile": "index.js",
+    "serverModuleFormat": "esm",
+    "ssr": true,
+    "unstable_routeConfig": [
+      {
+        "id": "root",
+        "path": "",
+        "file": "root.tsx",
+        "children": [
+          {
+            "file": "routes/auth.tsx",
+            "children": [
+              {
+                "file": "routes/app-shell.tsx",
+                "children": [
+                  {
+                    "file": "routes/home.tsx",
+                    "index": true
+                  },
+                  {
+                    "file": "routes/tien-len/tien-len.tsx",
+                    "children": [
+                      {
+                        "file": "routes/tien-len/index.tsx",
+                        "index": true
+                      },
+                      {
+                        "file": "routes/tien-len/_id.tsx",
+                        "children": [
+                          {
+                            "file": "routes/tien-len/_id_record-id.tsx",
+                            "path": "records/:recordId",
+                            "id": "tien-len-id-record-id"
+                          }
+                        ],
+                        "path": ":id",
+                        "id": "tien-len-id"
+                      }
+                    ],
+                    "path": "tien-len"
+                  }
+                ],
+                "id": "app-shell"
+              },
+              {
+                "file": "routes/login.tsx",
+                "path": "login",
+                "id": "login"
+              },
+              {
+                "file": "routes/logout.tsx",
+                "path": "logout",
+                "id": "logout"
+              }
+            ],
+            "id": "auth"
+          }
+        ]
+      }
+    ]
+  },
+  "viteConfig": {
+    "build": {
+      "assetsDir": "assets"
+    }
+  }
+}
