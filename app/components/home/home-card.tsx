@@ -16,7 +16,7 @@ export const HomeCard: FC<{
   href: string;
 }> = ({ title, description, href }) => {
   return (
-    <Link to={href}>
+    <Link to={href} className="block">
       <Card className="flex flex-row items-center gap-5 transition-all hover:shadow-2xl">
         <CardHeader className="grow">
           <CardTitle>{title}</CardTitle>

@@ -19,10 +19,25 @@ export default [
             id: "tien-len-id",
           },
           [
-            route("records/:recordId", "routes/tien-len/_id_record-id.tsx", {
+            index("routes/tien-len/_id_records.tsx", {
+              id: "tien-len-id-records",
+            }),
+            route(":recordId", "routes/tien-len/_id_record-id.tsx", {
               id: "tien-len-id-record-id",
             }),
           ]
+        ),
+      ]),
+
+      route("free-board", "routes/free-board/free-board.tsx", [
+        index("routes/free-board/index.tsx"),
+        route(
+          ":id",
+          "routes/free-board/_id.tsx",
+          {
+            id: "free-board-id",
+          },
+          []
         ),
       ]),
     ]),

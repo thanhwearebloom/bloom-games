@@ -13,11 +13,16 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <div className="space-3">
+    <div className="space-y-3">
       <HomeCard
         title="Tiến Lên"
         description="Cờ bạc là bác thằng bần!"
         href="/tien-len"
+      />
+      <HomeCard
+        title="Free Board"
+        description="Ghi điểm tự do"
+        href="/free-board"
       />
     </div>
   );

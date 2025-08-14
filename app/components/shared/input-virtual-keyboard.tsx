@@ -189,8 +189,12 @@ export const InputVirtualKeyboard: FC<{
             </Button>
           </div>
           <DrawerFooter className="flex justify-between flex-row gap-3">
-            <DrawerClose className="w-full max-w-1/2">
-              <Button type="button" variant="outline" className="w-full">
+            <DrawerClose asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full max-w-1/2"
+              >
                 Cancel
               </Button>
             </DrawerClose>

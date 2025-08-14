@@ -2,13 +2,14 @@ import type { Timestamp } from "firebase/firestore";
 
 export type Game<GameSetting = any> = {
   id?: string;
-  type: "TienLen";
+  type: "TienLen" | "FreeBoard";
   settings?: GameSetting;
   createdAt: Timestamp;
   createdBy?: string;
   isActive?: boolean;
 };
 
+// ---
 export type TienLenGameSettings = {
   playerA: string;
   playerB: string;
@@ -23,4 +24,12 @@ export type TienLenGameRecord = {
   playerC: number;
   playerD: number;
   createdAt: Timestamp;
+};
+
+// ---
+export type FreeBoardGameSettings = {};
+
+export type FreeBoardPlayers = {
+  player: string;
+  point: number;
 };

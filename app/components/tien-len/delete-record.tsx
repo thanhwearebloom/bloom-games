@@ -14,7 +14,7 @@ export const TienLenDeleteRecord: FC<{ id: string; recordId: string }> = ({
       {},
       {
         method: "delete",
-        action: `/tien-len/${id}/records/${recordId}`,
+        action: `/tien-len/${id}/${recordId}`,
       }
     );
     revalidator.revalidate();

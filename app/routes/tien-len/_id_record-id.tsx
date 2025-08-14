@@ -1,9 +1,11 @@
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import type { Route } from "./+types/_id_record-id";
 import { Collections, db } from "~/firebase";
-import { redirect } from "react-router";
 
-export async function clientAction({ params }: Route.ClientActionArgs) {
+export async function clientAction({
+  params,
+  request,
+}: Route.ClientActionArgs) {
   const id = params.id;
   const recordId = params.recordId;
 
@@ -19,8 +21,9 @@ export async function clientAction({ params }: Route.ClientActionArgs) {
     throw new Error("Record not found");
   }
 
-  await deleteDoc(recordRef);
-  return redirect(`/tien-len/${id}`);
+  if (request.method.toLowerCase() === "delete") {
+    await deleteDoc(recordRef);
+  }
 }
 
 export default function RecordId() {
