@@ -20,9 +20,9 @@ export async function clientLoader({ params }: Route.ClientActionArgs) {
     throw new Error("Game not found");
   }
   const game = {
-    ...(gameDoc.data() as Game),
+    ...gameDoc.data(),
     id: gameDoc.id,
-  };
+  } as Game;
 
   return {
     game,

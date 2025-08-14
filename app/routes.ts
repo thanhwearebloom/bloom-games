@@ -47,6 +47,22 @@ export default [
           ]
         ),
       ]),
+
+      route("bet", "routes/bet/bet.tsx", [
+        index("routes/bet/index.tsx"),
+        route(
+          ":id",
+          "routes/bet/_id.tsx",
+          {
+            id: "bet-id",
+          },
+          [
+            index("routes/bet/my-bet.tsx", {
+              id: "bet-id-my-bet",
+            }),
+          ]
+        ),
+      ]),
     ]),
     route("login", "routes/login.tsx", { id: "login" }),
     route("logout", "routes/logout.tsx", { id: "logout" }),

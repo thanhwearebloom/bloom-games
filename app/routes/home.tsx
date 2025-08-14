@@ -24,6 +24,7 @@ export default function Home() {
         description="Ghi điểm tự do"
         href="/free-board"
       />
+      <HomeCard title="Bet" description="Đặt cược" href="/bet" />
     </div>
   );
 }

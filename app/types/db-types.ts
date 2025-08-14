@@ -50,7 +50,7 @@ export type FreeBoardPlayer = {
 export type BetGameSettings = {
   teamA: string;
   teamB: string;
-  winner: "A" | "B";
+  winner?: "A" | "B";
   isLocked: boolean;
 };
 
