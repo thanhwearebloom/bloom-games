@@ -18,7 +18,7 @@ import { useSubmit } from "react-router";
 
 export const formSchema = z.object({
   players: z.array(
-    z.string().min(1, "Player is required"),
+    z.string("Player is required").min(1, "Player is required"),
     "Players is required"
   ),
 });

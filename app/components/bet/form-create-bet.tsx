@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Form as RRForm, useNavigation, useSubmit } from "react-router";
 import { Input } from "@/components/ui/input";
 export const formSchema = z.object({
-  teamA: z.string().min(1, "Team A is required"),
-  teamB: z.string().min(1, "Team B is required"),
+  teamA: z.string("Team A is required").min(1, "Team A is required"),
+  teamB: z.string("Team B is required").min(1, "Team B is required"),
 });
 
 type FormSchema = z.infer<typeof formSchema>;

@@ -19,7 +19,9 @@ import {
 
 export const formSchema = z.object({
   team: z.enum(["A", "B"], "Team is required"),
-  amount: z.number().min(10000, "Amount must be at least 10000"),
+  amount: z
+    .number("Amount is required")
+    .min(10000, "Amount must be at least 10000"),
 });
 
 export const FormMyBet: FC<{

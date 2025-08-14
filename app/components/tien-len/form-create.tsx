@@ -22,10 +22,10 @@ import {
 import CreatableSelect from "react-select/creatable";
 
 export const TienLenFormSchema = z.object({
-  playerA: z.string().min(1, "Player A is required"),
-  playerB: z.string().min(1, "Player B is required"),
-  playerC: z.string().min(1, "Player C is required"),
-  playerD: z.string().min(1, "Player D is required"),
+  playerA: z.string("Player A is required").min(1, "Player A is required"),
+  playerB: z.string("Player B is required").min(1, "Player B is required"),
+  playerC: z.string("Player C is required").min(1, "Player C is required"),
+  playerD: z.string("Player D is required").min(1, "Player D is required"),
 });
 
 type TienLenFormValues = z.infer<typeof TienLenFormSchema>;
