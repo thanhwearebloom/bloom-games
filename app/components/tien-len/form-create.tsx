@@ -1,6 +1,5 @@
 import { useMemo, type FC } from "react";
 import { Form as RRForm, useNavigation, useSubmit } from "react-router";
-import { Typeahead } from "@/components/shared/typeahead";
 import { Button } from "@/components/ui/button";
 import {
   Card,
