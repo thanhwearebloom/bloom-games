@@ -1,7 +1,6 @@
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import { Form as RRForm, useNavigation, useSubmit } from "react-router";
 import { Typeahead } from "@/components/shared/typeahead";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import CreatableSelect from "react-select/creatable";
 
 export const TienLenFormSchema = z.object({
   playerA: z.string().min(1, "Player A is required"),
@@ -45,6 +45,12 @@ export const TienLenFormCreate: FC<{
   });
   const submit = useSubmit();
   const navigation = useNavigation();
+  const options = useMemo(() => {
+    return users.map((user) => ({
+      value: user.displayName,
+      label: user.displayName,
+    }));
+  }, [users]);
   return (
     <Form {...form}>
       <RRForm
@@ -71,10 +77,17 @@ export const TienLenFormCreate: FC<{
                       <FormLabel>Player A</FormLabel>
                       <div className="grow">
                         <FormControl>
-                          <Typeahead
-                            items={users.map((user) => user.displayName)}
-                            {...field}
-                            onValueChange={field.onChange}
+                          <CreatableSelect<{ value: string; label: string }>
+                            isClearable
+                            options={options}
+                            value={
+                              field.value
+                                ? { value: field.value, label: field.value }
+                                : undefined
+                            }
+                            onChange={(value) => {
+                              field.onChange(value?.value);
+                            }}
                           />
                         </FormControl>
                       </div>
@@ -92,10 +105,17 @@ export const TienLenFormCreate: FC<{
                       <FormLabel>Player B</FormLabel>
                       <div className="grow">
                         <FormControl>
-                          <Typeahead
-                            items={users.map((user) => user.displayName)}
-                            {...field}
-                            onValueChange={field.onChange}
+                          <CreatableSelect<{ value: string; label: string }>
+                            isClearable
+                            options={options}
+                            value={
+                              field.value
+                                ? { value: field.value, label: field.value }
+                                : undefined
+                            }
+                            onChange={(value) => {
+                              field.onChange(value?.value);
+                            }}
                           />
                         </FormControl>
                       </div>
@@ -113,10 +133,17 @@ export const TienLenFormCreate: FC<{
                       <FormLabel>Player C</FormLabel>
                       <div className="grow">
                         <FormControl>
-                          <Typeahead
-                            items={users.map((user) => user.displayName)}
-                            {...field}
-                            onValueChange={field.onChange}
+                          <CreatableSelect<{ value: string; label: string }>
+                            isClearable
+                            options={options}
+                            value={
+                              field.value
+                                ? { value: field.value, label: field.value }
+                                : undefined
+                            }
+                            onChange={(value) => {
+                              field.onChange(value?.value);
+                            }}
                           />
                         </FormControl>
                       </div>
@@ -134,10 +161,17 @@ export const TienLenFormCreate: FC<{
                       <FormLabel>Player D</FormLabel>
                       <div className="grow">
                         <FormControl>
-                          <Typeahead
-                            items={users.map((user) => user.displayName)}
-                            {...field}
-                            onValueChange={field.onChange}
+                          <CreatableSelect<{ value: string; label: string }>
+                            isClearable
+                            options={options}
+                            value={
+                              field.value
+                                ? { value: field.value, label: field.value }
+                                : undefined
+                            }
+                            onChange={(value) => {
+                              field.onChange(value?.value);
+                            }}
                           />
                         </FormControl>
                       </div>
