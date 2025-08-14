@@ -11,7 +11,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftToLine } from "lucide-react";
+import { ArrowLeftToLine, Pencil } from "lucide-react";
 
 export const InputVirtualKeyboard: FC<{
   value?: number;
@@ -81,6 +81,7 @@ export const InputVirtualKeyboard: FC<{
         <DrawerTrigger asChild>
           <Button variant="outline" className="w-full" type="button">
             {value ?? "--"}
+            <Pencil />
           </Button>
         </DrawerTrigger>
         <DrawerContent>

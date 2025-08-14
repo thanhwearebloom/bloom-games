@@ -4,6 +4,7 @@ import type { FreeBoardPlayer } from "~/types/db-types";
 import { Button } from "@/components/ui/button";
 import { Loader, Trash } from "lucide-react";
 import { useFetcher } from "react-router";
+import { InputVirtualKeyboard } from "../shared/input-virtual-keyboard";
 
 export const FreeBoardMemberRecord: FC<
   FreeBoardPlayer & { gameId: string; isGameActive: boolean }
@@ -40,8 +41,17 @@ export const FreeBoardMemberRecord: FC<
         {player}{" "}
         {fetcher.state === "submitting" && <Loader className="animate-spin" />}
       </p>
-      <p className={cx("", point > 0 ? "text-green-500" : "text-red-500")}>
-        {point}
+      <p
+        className={cx(
+          "w-28 text-right",
+          point > 0 ? "text-green-500" : "text-red-500"
+        )}
+      >
+        {isGameActive ? (
+          <InputVirtualKeyboard value={point} onChangeValue={adjustPoint} />
+        ) : (
+          point
+        )}
       </p>
       {isGameActive && (
         <div className="flex gap-2">
