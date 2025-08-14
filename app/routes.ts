@@ -37,7 +37,14 @@ export default [
           {
             id: "free-board-id",
           },
-          []
+          [
+            index("routes/free-board/_id_records.tsx", {
+              id: "free-board-id-records",
+            }),
+            route(":recordId", "routes/free-board/_id_record-id.tsx", {
+              id: "free-board-id-record-id",
+            }),
+          ]
         ),
       ]),
     ]),

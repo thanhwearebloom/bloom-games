@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { clientLoader as authClientLoader } from "./auth";
 import { getAuth } from "firebase-admin/auth";
-import type { AppHandle } from "~/types/shared-types";
 
 export async function loader() {
   const usersQuery = await getAuth().listUsers();

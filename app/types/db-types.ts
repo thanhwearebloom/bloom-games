@@ -29,7 +29,8 @@ export type TienLenGameRecord = {
 // ---
 export type FreeBoardGameSettings = {};
 
-export type FreeBoardPlayers = {
+export type FreeBoardPlayer = {
   player: string;
   point: number;
+  id?: string;
 };
