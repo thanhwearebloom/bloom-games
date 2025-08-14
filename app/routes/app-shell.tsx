@@ -36,7 +36,7 @@ export default function AppShell() {
   const match = useMatches();
 
   return (
-    <div className="min-h-screen container mx-auto px-3">
+    <div className="min-h-screen container mx-auto px-3 pb-5">
       <header className="flex items-center gap-3 py-3">
         <Breadcrumb>
           <BreadcrumbList>
@@ -88,6 +88,10 @@ export default function AppShell() {
         </DropdownMenu>
       </header>
       <Outlet />
+      <footer className="text-center py-5 text-slate-500">
+        <p>© {new Date().getFullYear()} ❤️ Bloom Games</p>
+        <p>by Thanh Nguyen</p>
+      </footer>
     </div>
   );
 }
