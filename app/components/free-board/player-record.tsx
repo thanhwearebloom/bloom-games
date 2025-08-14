@@ -6,8 +6,8 @@ import { Loader, Trash } from "lucide-react";
 import { useFetcher } from "react-router";
 
 export const FreeBoardMemberRecord: FC<
-  FreeBoardPlayer & { gameId: string }
-> = ({ player, point, id, gameId }) => {
+  FreeBoardPlayer & { gameId: string; isGameActive: boolean }
+> = ({ player, point, id, gameId, isGameActive }) => {
   const fetcher = useFetcher();
 
   const adjustPoint = useCallback((newPoint: number) => {
@@ -43,17 +43,19 @@ export const FreeBoardMemberRecord: FC<
       <p className={cx("", point > 0 ? "text-green-500" : "text-red-500")}>
         {point}
       </p>
-      <div className="flex gap-2">
-        <Button variant={"secondary"} onClick={() => adjustPoint(point - 1)}>
-          -1
-        </Button>
-        <Button variant={"secondary"} onClick={() => adjustPoint(point + 1)}>
-          +1
-        </Button>
-        <Button variant={"destructive"} onClick={deleteRecord}>
-          <Trash />
-        </Button>
-      </div>
+      {isGameActive && (
+        <div className="flex gap-2">
+          <Button variant={"secondary"} onClick={() => adjustPoint(point - 1)}>
+            -1
+          </Button>
+          <Button variant={"secondary"} onClick={() => adjustPoint(point + 1)}>
+            +1
+          </Button>
+          <Button variant={"destructive"} onClick={deleteRecord}>
+            <Trash />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

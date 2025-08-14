@@ -30,7 +30,8 @@ export const FreeBoardFormAddPlayers: FC<{
     value: string;
     label: string;
   }[];
-}> = ({ users }) => {
+  onSubmit?: () => void;
+}> = ({ users, onSubmit }) => {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -48,6 +49,7 @@ export const FreeBoardFormAddPlayers: FC<{
           form.reset({
             players: [],
           });
+          onSubmit?.();
         })}
       >
         <FormField

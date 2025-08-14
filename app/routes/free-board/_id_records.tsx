@@ -1,6 +1,6 @@
 import { Form, useNavigation, useRouteLoaderData } from "react-router";
 import type { loader as appShellLoader } from "../app-shell";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { FreeBoardFormAddPlayers } from "~/components/free-board/form-add-players";
 import type { Route } from "./+types/_id_records";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
@@ -72,6 +72,7 @@ export default function FreeBoardIdRecords({
   loaderData,
   params,
 }: Route.ComponentProps) {
+  const [openAddPlayers, setOpenAddPlayers] = useState(false);
   const freeBoardData =
     useRouteLoaderData<typeof freeBoardIdLoader>("free-board-id");
   const game = freeBoardData?.game;
@@ -104,21 +105,26 @@ export default function FreeBoardIdRecords({
 
   return (
     <div className="space-y-5">
-      <div className="flex justify-end">
-        <Dialog>
-          <DialogTrigger>
-            <Button>
-              <Plus /> Add Players
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Players</DialogTitle>
-            </DialogHeader>
-            <FreeBoardFormAddPlayers users={options} />
-          </DialogContent>
-        </Dialog>
-      </div>
+      {game.isActive && (
+        <div className="flex justify-end">
+          <Dialog open={openAddPlayers} onOpenChange={setOpenAddPlayers}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus /> Add Players
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Players</DialogTitle>
+              </DialogHeader>
+              <FreeBoardFormAddPlayers
+                users={options}
+                onSubmit={() => setOpenAddPlayers(false)}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
+      )}
       <div className="divide-y divide-accent [&_>*]:py-3">
         {records
           .sort((a, b) => a.player.localeCompare(b.player))
@@ -127,8 +133,14 @@ export default function FreeBoardIdRecords({
               key={record.id}
               {...record}
               gameId={params.id}
+              isGameActive={game.isActive ?? false}
             />
           ))}
+        {records.length === 0 && (
+          <p className="text-center text-slate-400">
+            No players found. Click "Add Players" to add players.
+          </p>
+        )}
       </div>
       {sum !== 0 && (
         <Alert variant="destructive">
@@ -138,7 +150,7 @@ export default function FreeBoardIdRecords({
           </AlertDescription>
         </Alert>
       )}
-      {game.isActive && sum === 0 && (
+      {game.isActive && sum === 0 && records.length > 0 && (
         <Form method="put" action={`/free-board/${params.id}`}>
           <Button
             type="submit"
