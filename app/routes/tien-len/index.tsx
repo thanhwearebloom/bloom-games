@@ -3,7 +3,7 @@ import type { AppHandle } from "~/types/shared-types";
 import type { loader as appShellLoader } from "../app-shell";
 import { redirect, useRouteLoaderData } from "react-router";
 import type { Route } from "./+types/index";
-import type { Game, TienLenGameSettings } from "~/types/db-types";
+import type { Game } from "~/types/db-types";
 import {
   addDoc,
   collection,
@@ -44,7 +44,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       playerD,
     },
     isActive: true,
-  } satisfies Game<TienLenGameSettings>;
+  } satisfies Game;
 
   const docRef = await addDoc(collection(db, Collections.Games), data);
   const gameId = docRef.id;
@@ -67,7 +67,7 @@ export async function clientLoader() {
       ({
         ...doc.data(),
         id: doc.id,
-      }) as Game<TienLenGameSettings>
+      }) as Game
   );
 
   return {

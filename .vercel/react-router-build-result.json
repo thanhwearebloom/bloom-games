@@ -13,8 +13,11 @@
       "root": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/home": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/tien-len/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "tien-len-id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "tien-len-id-records": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "tien-len-id-record-id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/free-board/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "free-board-id-records": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "free-board-id-record-id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "login": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "logout": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
     },
@@ -67,11 +70,53 @@
         "path": ":id",
         "config": {}
       },
+      "tien-len-id-records": {
+        "id": "tien-len-id-records",
+        "parentId": "tien-len-id",
+        "file": "app/routes/tien-len/_id_records.tsx",
+        "index": true,
+        "config": {}
+      },
       "tien-len-id-record-id": {
         "id": "tien-len-id-record-id",
         "parentId": "tien-len-id",
         "file": "app/routes/tien-len/_id_record-id.tsx",
-        "path": "records/:recordId",
+        "path": ":recordId",
+        "config": {}
+      },
+      "routes/free-board/free-board": {
+        "id": "routes/free-board/free-board",
+        "parentId": "app-shell",
+        "file": "app/routes/free-board/free-board.tsx",
+        "path": "free-board",
+        "config": {}
+      },
+      "routes/free-board/index": {
+        "id": "routes/free-board/index",
+        "parentId": "routes/free-board/free-board",
+        "file": "app/routes/free-board/index.tsx",
+        "index": true,
+        "config": {}
+      },
+      "free-board-id": {
+        "id": "free-board-id",
+        "parentId": "routes/free-board/free-board",
+        "file": "app/routes/free-board/_id.tsx",
+        "path": ":id",
+        "config": {}
+      },
+      "free-board-id-records": {
+        "id": "free-board-id-records",
+        "parentId": "free-board-id",
+        "file": "app/routes/free-board/_id_records.tsx",
+        "index": true,
+        "config": {}
+      },
+      "free-board-id-record-id": {
+        "id": "free-board-id-record-id",
+        "parentId": "free-board-id",
+        "file": "app/routes/free-board/_id_record-id.tsx",
+        "path": ":recordId",
         "config": {}
       },
       "login": {
@@ -141,11 +186,47 @@
         "file": "routes/tien-len/_id.tsx",
         "path": ":id"
       },
+      "tien-len-id-records": {
+        "id": "tien-len-id-records",
+        "parentId": "tien-len-id",
+        "file": "routes/tien-len/_id_records.tsx",
+        "index": true
+      },
       "tien-len-id-record-id": {
         "id": "tien-len-id-record-id",
         "parentId": "tien-len-id",
         "file": "routes/tien-len/_id_record-id.tsx",
-        "path": "records/:recordId"
+        "path": ":recordId"
+      },
+      "routes/free-board/free-board": {
+        "id": "routes/free-board/free-board",
+        "parentId": "app-shell",
+        "file": "routes/free-board/free-board.tsx",
+        "path": "free-board"
+      },
+      "routes/free-board/index": {
+        "id": "routes/free-board/index",
+        "parentId": "routes/free-board/free-board",
+        "file": "routes/free-board/index.tsx",
+        "index": true
+      },
+      "free-board-id": {
+        "id": "free-board-id",
+        "parentId": "routes/free-board/free-board",
+        "file": "routes/free-board/_id.tsx",
+        "path": ":id"
+      },
+      "free-board-id-records": {
+        "id": "free-board-id-records",
+        "parentId": "free-board-id",
+        "file": "routes/free-board/_id_records.tsx",
+        "index": true
+      },
+      "free-board-id-record-id": {
+        "id": "free-board-id-record-id",
+        "parentId": "free-board-id",
+        "file": "routes/free-board/_id_record-id.tsx",
+        "path": ":recordId"
       },
       "login": {
         "id": "login",
@@ -194,8 +275,13 @@
                         "file": "routes/tien-len/_id.tsx",
                         "children": [
                           {
+                            "file": "routes/tien-len/_id_records.tsx",
+                            "index": true,
+                            "id": "tien-len-id-records"
+                          },
+                          {
                             "file": "routes/tien-len/_id_record-id.tsx",
-                            "path": "records/:recordId",
+                            "path": ":recordId",
                             "id": "tien-len-id-record-id"
                           }
                         ],
@@ -204,6 +290,33 @@
                       }
                     ],
                     "path": "tien-len"
+                  },
+                  {
+                    "file": "routes/free-board/free-board.tsx",
+                    "children": [
+                      {
+                        "file": "routes/free-board/index.tsx",
+                        "index": true
+                      },
+                      {
+                        "file": "routes/free-board/_id.tsx",
+                        "children": [
+                          {
+                            "file": "routes/free-board/_id_records.tsx",
+                            "index": true,
+                            "id": "free-board-id-records"
+                          },
+                          {
+                            "file": "routes/free-board/_id_record-id.tsx",
+                            "path": ":recordId",
+                            "id": "free-board-id-record-id"
+                          }
+                        ],
+                        "path": ":id",
+                        "id": "free-board-id"
+                      }
+                    ],
+                    "path": "free-board"
                   }
                 ],
                 "id": "app-shell"

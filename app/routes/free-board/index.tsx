@@ -9,7 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 import { Collections, db } from "~/firebase";
-import type { FreeBoardGameSettings, Game } from "~/types/db-types";
+import type { Game } from "~/types/db-types";
 import type { Route } from "./+types/index";
 import { GameCard } from "~/components/shared/game-card";
 import { format } from "date-fns";
@@ -40,7 +40,7 @@ export async function clientLoader() {
       ({
         ...doc.data(),
         id: doc.id,
-      }) as Game<FreeBoardGameSettings>
+      }) as Game
   );
 
   return {
@@ -56,7 +56,7 @@ export async function clientAction() {
     createdBy: auth.currentUser?.uid,
     settings: {},
     isActive: true,
-  } satisfies Game<FreeBoardGameSettings>;
+  } satisfies Game;
 
   const docRef = await addDoc(collection(db, Collections.Games), data);
   const gameId = docRef.id;

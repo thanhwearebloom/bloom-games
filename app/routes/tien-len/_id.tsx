@@ -22,7 +22,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     throw new Error("Game not found");
   }
   const game = {
-    ...(gameDoc.data() as Game<TienLenGameSettings>),
+    ...(gameDoc.data() as Game),
     id: gameDoc.id,
   };
   return {
@@ -42,7 +42,7 @@ export async function clientAction({
 
   if (request.method.toLowerCase() === "put") {
     // put an end to the game (set isActive = false)
-    const gameData = gameDoc.data() as Game<TienLenGameSettings>;
+    const gameData = gameDoc.data() as Game;
     gameData.isActive = false;
     await updateDoc(gameDocRef, gameData);
   }
