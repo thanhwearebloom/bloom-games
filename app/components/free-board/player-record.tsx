@@ -10,8 +10,9 @@ export const FreeBoardMemberRecord: FC<
 	FreeBoardPlayer & { gameId: string; isGameActive: boolean }
 > = ({ player, point, id, gameId, isGameActive }) => {
 	const fetcher = useFetcher();
+	const fetcherPoint = fetcher.formData?.get("point")?.valueOf();
 	const [currentPoint, setPoint] = useOptimistic(
-		(fetcher.formData?.get("point")?.valueOf() as number) ?? point,
+		fetcherPoint ? Number(fetcherPoint) : point,
 	);
 
 	const adjustPoint = useCallback(

@@ -164,13 +164,13 @@ export default function FreeBoardIdRecords({
           </AlertDescription>
         </Alert>
       )}
-      {game.isActive && sum === 0 && records.length > 0 && (
+      {game.isActive && sum === 0 && records.length > 0 && !isAnySubmitting && (
         <Form method="put" action={`/free-board/${params.id}`}>
           <Button
             type="submit"
             variant={"destructive"}
             className="w-full"
-            disabled={navigation.state === "submitting" || isAnySubmitting}
+            disabled={navigation.state === "submitting"}
           >
             {navigation.state === "submitting" ? "Ending..." : "End Game"}
           </Button>
