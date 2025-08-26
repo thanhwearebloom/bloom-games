@@ -7,7 +7,7 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import { LockIcon, UnlockIcon } from "lucide-react";
+import { Crown, LockIcon, UnlockIcon } from "lucide-react";
 import { useCallback, useEffect, useRef } from "react";
 import {
   Outlet,
@@ -32,6 +32,26 @@ import type { AppHandle } from "~/types/shared-types";
 import type { loader as appShellLoader } from "../app-shell";
 import type { clientLoader as authClientLoader } from "../auth";
 import type { Route } from "./+types/_id";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { ErrorBoundaryUI } from "~/components/shared/error-boundary-ui";
+
+const Winner = () => {
+  return (
+    <p className="text-red-400 text-center w-full font-extrabold flex items-center justify-center gap-2">
+      <Crown />
+      WINNERS
+    </p>
+  );
+};
+
+const Loser = () => {
+  return (
+    <p className="text-gray-400 text-center w-full font-extrabold flex items-center justify-center gap-2">
+      <Crown className="rotate-180" />
+      LOSERS
+    </p>
+  );
+};
 
 export const handle = {
   breadcrumb: {
@@ -133,6 +153,16 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
       };
     });
 
+  const totalTeamA = recordTeamA.reduce(
+    (acc, record) => acc + record.amount,
+    0,
+  );
+  const totalTeamB = recordTeamB.reduce(
+    (acc, record) => acc + record.amount,
+    0,
+  );
+  const isEqual = totalTeamA === totalTeamB;
+
   const subscription = useRef(recordsRef);
   const subscriptionGame = useRef(gameRef);
 
@@ -146,7 +176,7 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [revalidator.revalidate]);
 
   useEffect(() => {
     const unsubscribeGame = onSnapshot(subscriptionGame.current, () => {
@@ -156,78 +186,100 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
     return () => {
       unsubscribeGame();
     };
-  }, []);
+  }, [revalidator.revalidate]);
 
-  const setGameLocked = useCallback((isLocked: boolean) => {
-    fetcher.submit(
-      {
-        isLocked: isLocked ? "true" : "false",
-      },
-      {
-        method: "put",
-        encType: "multipart/form-data",
-      },
-    );
-  }, []);
+  const setGameLocked = useCallback(
+    (isLocked: boolean) => {
+      fetcher.submit(
+        {
+          isLocked: isLocked ? "true" : "false",
+        },
+        {
+          method: "put",
+          encType: "multipart/form-data",
+        },
+      );
+    },
+    [fetcher.submit],
+  );
 
-  const setGameEnded = useCallback((winner: "A" | "B") => {
-    fetcher.submit(
-      {
-        isActive: "false",
-        isLocked: "true",
-        winner,
-      },
-      {
-        method: "put",
-        encType: "multipart/form-data",
-      },
-    );
-  }, []);
+  const setGameEnded = useCallback(
+    (winner: "A" | "B" | "None") => {
+      fetcher.submit(
+        {
+          isActive: "false",
+          isLocked: "true",
+          winner,
+        },
+        {
+          method: "put",
+          encType: "multipart/form-data",
+        },
+      );
+    },
+    [fetcher.submit],
+  );
 
   return (
     <div className="space-y-5">
       <GameDetailHeader game={game} />
-      {user?.uid === game.createdBy && game.isActive && game.type === "Bet" && (
-        <div className="flex justify-end gap-2">
-          {game.settings?.isLocked ? (
-            <Button
-              variant="default"
-              disabled={fetcher.state === "submitting"}
-              onClick={() => setGameLocked(false)}
-            >
-              <LockIcon /> Unlock
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              disabled={fetcher.state === "submitting"}
-              onClick={() => setGameLocked(true)}
-            >
-              <UnlockIcon /> Lock
-            </Button>
-          )}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="destructive"
-                disabled={fetcher.state === "submitting"}
-              >
-                End Game
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>End Game</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setGameEnded("A")}>
-                Team A as Winner
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setGameEnded("B")}>
-                Team B as Winner
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+      {!isEqual && (
+        <Alert>
+          <AlertTitle>Unequal amounts</AlertTitle>
+          <AlertDescription>
+            Team A and Team B have different amounts. Please adjust the amounts
+            before locking or ending the bet.
+          </AlertDescription>
+        </Alert>
       )}
+
+      {isEqual &&
+        user?.uid === game.createdBy &&
+        game.isActive &&
+        game.type === "Bet" && (
+          <div className="flex justify-end gap-2">
+            {game.settings?.isLocked ? (
+              <Button
+                variant="default"
+                disabled={fetcher.state === "submitting"}
+                onClick={() => setGameLocked(false)}
+              >
+                <LockIcon /> Unlock
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                disabled={fetcher.state === "submitting"}
+                onClick={() => setGameLocked(true)}
+              >
+                <UnlockIcon /> Lock
+              </Button>
+            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="destructive"
+                  disabled={fetcher.state === "submitting"}
+                >
+                  End Bet
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>End Game</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setGameEnded("A")}>
+                  Team A as Winner
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setGameEnded("B")}>
+                  Team B as Winner
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setGameEnded("None")}>
+                  No Winner
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
 
       {game.type === "Bet" && (
         <div className="grid grid-cols-2 gap-3">
@@ -235,6 +287,8 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
             <p className="text-lg font-semibold bg-red-300 rounded p-3 w-full text-center">
               {game.settings?.teamA}
             </p>
+            {game.settings?.winner === "A" && <Winner />}
+            {game.settings?.winner === "B" && <Loser />}
             {recordTeamA.map((record) => (
               <BetRecord
                 key={record.id}
@@ -248,6 +302,8 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
             <p className="text-lg font-semibold bg-blue-300 rounded p-3 w-full text-center">
               {game.settings?.teamB}
             </p>
+            {game.settings?.winner === "B" && <Winner />}
+            {game.settings?.winner === "A" && <Loser />}
             {recordTeamB.map((record) => (
               <BetRecord
                 key={record.id}
@@ -263,3 +319,7 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  return <ErrorBoundaryUI error={error} />;
+};

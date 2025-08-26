@@ -1,10 +1,11 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Outlet, redirect } from "react-router";
+import { Outlet } from "react-router";
 import { GameDetailHeader } from "~/components/shared/game-detail-header";
 import { Collections, db } from "~/firebase";
-import type { Game, TienLenGameSettings } from "~/types/db-types";
+import type { Game } from "~/types/db-types";
 import type { AppHandle } from "~/types/shared-types";
 import type { Route } from "./+types/_id";
+import { ErrorBoundaryUI } from "~/components/shared/error-boundary-ui";
 
 export const handle = {
   breadcrumb: {
@@ -56,3 +57,7 @@ export default function TienLenId({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  return <ErrorBoundaryUI error={error} />;
+};

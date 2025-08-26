@@ -4,8 +4,9 @@ import {
   signInWithPopup,
   signInWithRedirect,
 } from "firebase/auth";
-import { isRouteErrorResponse, redirect } from "react-router";
+import { redirect } from "react-router";
 import type { Route } from "./+types/login";
+import { ErrorBoundaryUI } from "~/components/shared/error-boundary-ui";
 
 export async function clientLoader() {
   const auth = getAuth();
@@ -23,27 +24,7 @@ export async function clientLoader() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div>
-        <h1>
-          {error.status} {error.statusText}
-        </h1>
-        <p>{error.data}</p>
-      </div>
-    );
-  } else if (error instanceof Error) {
-    return (
-      <div>
-        <h1>Error</h1>
-        <p>{error.message}</p>
-        <p>The stack trace is:</p>
-        <pre>{error.stack}</pre>
-      </div>
-    );
-  } else {
-    return <h1>Unknown Error</h1>;
-  }
+  return <ErrorBoundaryUI error={error} />;
 }
 
 export default function Login() {

@@ -1,5 +1,5 @@
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { Plus } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import {
   Form,
@@ -159,17 +159,22 @@ export default function FreeBoardIdRecords({
           </AlertDescription>
         </Alert>
       )}
-      {game.isActive &&
-        sum === 0 &&
-        records.length > 0 &&
-        !isAnySubmitting &&
-        navigation.state === "idle" && (
-          <Form method="put" action={`/free-board/${params.id}`}>
-            <Button type="submit" variant={"destructive"} className="w-full">
-              End Game
-            </Button>
-          </Form>
-        )}
+      {game.isActive && sum === 0 && records.length > 0 && !isAnySubmitting && (
+        <Form method="put" action={`/free-board/${params.id}`}>
+          <Button
+            type="submit"
+            variant={"destructive"}
+            className="w-full"
+            disabled={navigation.state === "submitting"}
+          >
+            {navigation.state === "submitting" ? (
+              <Loader className="animate-spin" />
+            ) : (
+              "End Game"
+            )}
+          </Button>
+        </Form>
+      )}
       {!game.isActive && <PaybackInfo paybackInfo={paybackInfo} unit="K" />}
     </div>
   );

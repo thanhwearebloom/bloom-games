@@ -5,6 +5,7 @@ import { Collections, db } from "~/firebase";
 import type { Game } from "~/types/db-types";
 import type { AppHandle } from "~/types/shared-types";
 import type { Route } from "./+types/_id";
+import { ErrorBoundaryUI } from "~/components/shared/error-boundary-ui";
 
 export const handle = {
   breadcrumb: {
@@ -53,3 +54,7 @@ export default function FreeBoardId({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  return <ErrorBoundaryUI error={error} />;
+};
