@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BrushCleaning } from "lucide-react";
-import { type FC, useCallback, useMemo } from "react";
+import { type FC, useCallback, useMemo, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { Form as RRForm, useNavigation, useSubmit } from "react-router";
 import { z } from "zod";
@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -47,7 +46,7 @@ export const TienLenFormCreateRecordSchema = z
     }
   });
 
-type TienLenFormCreateRecordValues = z.infer<
+export type TienLenFormCreateRecordValues = z.infer<
   typeof TienLenFormCreateRecordSchema
 >;
 
@@ -56,12 +55,12 @@ export const TienLenFormCreateRecord: FC<{
   playerB: string;
   playerC: string;
   playerD: string;
-}> = ({ playerA, playerB, playerC, playerD }) => {
+  onSubmit?: (values: TienLenFormCreateRecordValues) => void;
+}> = ({ playerA, playerB, playerC, playerD, onSubmit }) => {
   const form = useForm<TienLenFormCreateRecordValues>({
     resolver: zodResolver(TienLenFormCreateRecordSchema),
   });
   const submit = useSubmit();
-  const navigation = useNavigation();
   const watchA = form.watch("playerA");
   const watchB = form.watch("playerB");
   const watchC = form.watch("playerC");
@@ -133,23 +132,40 @@ export const TienLenFormCreateRecord: FC<{
     [form],
   );
 
-  return (
-    <Form {...form}>
-      <RRForm
-        method="post"
-        onSubmit={form.handleSubmit(async (values) => {
-          await submit(values, {
+  const [isPending, startTransition] = useTransition();
+
+  const submitHandler = useCallback(
+    (values: TienLenFormCreateRecordValues) => {
+      startTransition(async () => {
+        if (onSubmit) {
+          onSubmit(values);
+        }
+        await submit(
+          {
+            playerA: values.playerA ?? 0,
+            playerB: values.playerB ?? 0,
+            playerC: values.playerC ?? 0,
+            playerD: values.playerD ?? 0,
+          },
+          {
             method: "post",
             encType: "multipart/form-data",
-          });
-          form.reset({
-            playerA: undefined,
-            playerB: undefined,
-            playerC: undefined,
-            playerD: undefined,
-          });
-        })}
-      >
+          },
+        );
+        form.reset({
+          playerA: undefined,
+          playerB: undefined,
+          playerC: undefined,
+          playerD: undefined,
+        });
+      });
+    },
+    [form.reset, submit, onSubmit],
+  );
+
+  return (
+    <Form {...form}>
+      <RRForm method="post" onSubmit={form.handleSubmit(submitHandler)}>
         <div className="space-y-3">
           <div className="grid grid-cols-5 space-x-3">
             <div className="space-y-2 flex flex-col justify-end">
@@ -273,9 +289,9 @@ export const TienLenFormCreateRecord: FC<{
           <Button
             type="submit"
             className="w-full"
-            disabled={navigation.state === "submitting" || !isZero}
+            disabled={isPending || !isZero}
           >
-            Submit
+            {isPending ? "Please wait..." : "Submit"}
           </Button>
         </div>
       </RRForm>

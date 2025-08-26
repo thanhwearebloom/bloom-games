@@ -142,11 +142,6 @@ export default function FreeBoardIdRecords({
           gameId={params.id}
           isGameActive={game.isActive ?? false}
         />
-        {records.length === 0 && (
-          <p className="text-center text-slate-400">
-            No players found. Click "Add Players" to add players.
-          </p>
-        )}
       </div>
       {isAnySubmitting && (
         <Alert>

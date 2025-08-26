@@ -19,13 +19,18 @@ import {
 } from "@/components/ui/table";
 import { PaybackInfo } from "~/components/shared/payback-info";
 import { TienLenDeleteRecord } from "~/components/tien-len/delete-record";
-import { TienLenFormCreateRecord } from "~/components/tien-len/form-create-record";
+import {
+  TienLenFormCreateRecord,
+  type TienLenFormCreateRecordValues,
+} from "~/components/tien-len/form-create-record";
 import { Button } from "~/components/ui/button";
 import { Collections, db } from "~/firebase";
 import { payback } from "~/lib/payback";
 import type { TienLenGameRecord } from "~/types/db-types";
 import type { clientLoader as tienLenIdLoader } from "./_id";
 import type { Route } from "./+types/_id_records";
+import { useCallback, useOptimistic } from "react";
+import { Loader } from "lucide-react";
 
 export async function clientAction({
   params,
@@ -78,9 +83,29 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 }
 
 export default function TienLenIdRecords({ loaderData }: Route.ComponentProps) {
-  const { records } = loaderData;
+  const [{ state, records }, updateRecords] = useOptimistic(
+    {
+      state: "idle",
+      records: loaderData.records,
+    },
+    (state, payload: { type: "add" | "remove"; record: TienLenGameRecord }) => {
+      if (payload.type === "add") {
+        return {
+          state: "submitting",
+          records: [...state.records, payload.record],
+        };
+      }
+      return {
+        state: "submitting",
+        records: state.records.filter(
+          (record) => record.id !== payload.record.id,
+        ),
+      };
+    },
+  );
   const parentLoaderData =
     useRouteLoaderData<typeof tienLenIdLoader>("tien-len-id");
+  const navigation = useNavigation();
   const game = parentLoaderData?.game;
   const sumPlayerA = records.reduce(
     (acc, record) => acc + (record.playerA || 0),
@@ -107,7 +132,39 @@ export default function TienLenIdRecords({ loaderData }: Route.ComponentProps) {
           [game?.settings?.playerD ?? ""]: sumPlayerD,
         })
       : undefined;
-  const navigation = useNavigation();
+
+  const submitNewRecordHandler = useCallback(
+    (values: TienLenFormCreateRecordValues) => {
+      updateRecords({
+        type: "add",
+        record: {
+          playerA: values.playerA ?? 0,
+          playerB: values.playerB ?? 0,
+          playerC: values.playerC ?? 0,
+          playerD: values.playerD ?? 0,
+          createdAt: Timestamp.now(),
+        },
+      });
+    },
+    [updateRecords],
+  );
+
+  const deleteHandler = useCallback(
+    (recordId: string) => {
+      updateRecords({
+        type: "remove",
+        record: {
+          id: recordId,
+          playerA: 0,
+          playerB: 0,
+          playerC: 0,
+          playerD: 0,
+          createdAt: Timestamp.now(),
+        },
+      });
+    },
+    [updateRecords],
+  );
 
   if (!game) {
     return null;
@@ -146,12 +203,16 @@ export default function TienLenIdRecords({ loaderData }: Route.ComponentProps) {
               <TableCell className="text-right">{record.playerC}</TableCell>
               <TableCell className="text-right">{record.playerD}</TableCell>
               <TableCell>
-                {game.isActive && (
-                  <TienLenDeleteRecord
-                    id={game.id ?? ""}
-                    recordId={record.id ?? ""}
-                  />
-                )}
+                {game.isActive &&
+                  (record.id ? (
+                    <TienLenDeleteRecord
+                      id={game.id ?? ""}
+                      recordId={record.id ?? ""}
+                      onDelete={deleteHandler}
+                    />
+                  ) : (
+                    <Loader className="animate-spin" />
+                  ))}
               </TableCell>
             </TableRow>
           ))}
@@ -167,16 +228,26 @@ export default function TienLenIdRecords({ loaderData }: Route.ComponentProps) {
           {game.isActive && records.length > 0 && (
             <TableRow>
               <TableCell colSpan={5}>
-                <Form method="PUT" action={"/tien-len/" + game.id}>
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    variant={"destructive"}
-                    disabled={navigation.state === "submitting"}
-                  >
-                    End game
-                  </Button>
-                </Form>
+                {state === "idle" ? (
+                  <Form method="PUT" action={"/tien-len/" + game.id}>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      variant={"destructive"}
+                      disabled={navigation.state === "submitting"}
+                    >
+                      {navigation.state === "submitting" ? (
+                        <Loader className="animate-spin" />
+                      ) : (
+                        "End game"
+                      )}
+                    </Button>
+                  </Form>
+                ) : (
+                  <div className="flex items-center gap-2 justify-center">
+                    <Loader className="animate-spin" /> Updating...
+                  </div>
+                )}
               </TableCell>
             </TableRow>
           )}
@@ -190,6 +261,7 @@ export default function TienLenIdRecords({ loaderData }: Route.ComponentProps) {
             playerB={game.settings?.playerB ?? ""}
             playerC={game.settings?.playerC ?? ""}
             playerD={game.settings?.playerD ?? ""}
+            onSubmit={submitNewRecordHandler}
           />
         </div>
       ) : (

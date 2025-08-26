@@ -187,7 +187,7 @@ export const TienLenFormCreate: FC<{
               type="submit"
               disabled={navigation.state === "submitting"}
             >
-              {navigation.state === "submitting" ? "Creating..." : "Start"}
+              {navigation.state === "submitting" ? "Please wait..." : "Start"}
             </Button>
           </CardFooter>
         </Card>
