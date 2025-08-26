@@ -164,18 +164,17 @@ export default function FreeBoardIdRecords({
           </AlertDescription>
         </Alert>
       )}
-      {game.isActive && sum === 0 && records.length > 0 && !isAnySubmitting && (
-        <Form method="put" action={`/free-board/${params.id}`}>
-          <Button
-            type="submit"
-            variant={"destructive"}
-            className="w-full"
-            disabled={navigation.state === "submitting"}
-          >
-            {navigation.state === "submitting" ? "Ending..." : "End Game"}
-          </Button>
-        </Form>
-      )}
+      {game.isActive &&
+        sum === 0 &&
+        records.length > 0 &&
+        !isAnySubmitting &&
+        navigation.state === "idle" && (
+          <Form method="put" action={`/free-board/${params.id}`}>
+            <Button type="submit" variant={"destructive"} className="w-full">
+              End Game
+            </Button>
+          </Form>
+        )}
       {!game.isActive && <PaybackInfo paybackInfo={paybackInfo} unit="K" />}
     </div>
   );
