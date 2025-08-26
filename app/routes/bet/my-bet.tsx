@@ -1,20 +1,21 @@
 import { getAuth } from "firebase/auth";
-import type { Route } from "./+types/my-bet";
 import {
+  addDoc,
+  collection,
   deleteDoc,
   doc,
   getDocs,
-  Timestamp,
-  where,
   query,
+  Timestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
-import type { BetGameRecord } from "~/types/db-types";
-import { addDoc, collection } from "firebase/firestore";
-import { Collections, db } from "~/firebase";
-import { FormMyBet } from "~/components/bet/form-my-bet";
 import { useRouteLoaderData } from "react-router";
+import { FormMyBet } from "~/components/bet/form-my-bet";
+import { Collections, db } from "~/firebase";
+import type { BetGameRecord } from "~/types/db-types";
 import type { clientLoader as betIdClientLoader } from "./_id";
+import type { Route } from "./+types/my-bet";
 
 export async function clientAction({
   request,
@@ -28,7 +29,7 @@ export async function clientAction({
   }
   const collectionRef = collection(db, Collections.Games, params.id, "records");
   const recordByUser = await getDocs(
-    query(collectionRef, where("player", "==", auth.currentUser?.uid))
+    query(collectionRef, where("player", "==", auth.currentUser?.uid)),
   );
 
   if (request.method.toLowerCase() === "post") {
@@ -81,7 +82,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   }
   const collectionRef = collection(db, Collections.Games, gameId, "records");
   const querySnapshot = await getDocs(
-    query(collectionRef, where("player", "==", auth.currentUser?.uid))
+    query(collectionRef, where("player", "==", auth.currentUser?.uid)),
   );
   const myBet = querySnapshot.docs?.[0]?.data();
   return {

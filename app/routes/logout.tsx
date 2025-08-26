@@ -1,8 +1,8 @@
-import { Await, Link, redirect } from "react-router";
 import { getAuth } from "firebase/auth";
-import type { Route } from "./+types/logout";
 import { Suspense } from "react";
+import { Await, Link, redirect } from "react-router";
 import { Button } from "~/components/ui/button";
+import type { Route } from "./+types/logout";
 
 export async function clientLoader() {
   const auth = getAuth();

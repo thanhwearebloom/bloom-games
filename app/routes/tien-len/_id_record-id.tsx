@@ -1,6 +1,6 @@
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
-import type { Route } from "./+types/_id_record-id";
 import { Collections, db } from "~/firebase";
+import type { Route } from "./+types/_id_record-id";
 
 export async function clientAction({
   params,

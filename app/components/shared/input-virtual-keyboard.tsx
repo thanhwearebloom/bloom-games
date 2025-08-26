@@ -1,5 +1,6 @@
-import { useState, type FC } from "react";
-import { useEffect } from "react";
+import { ArrowLeftToLine, Pencil } from "lucide-react";
+import { type FC, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -10,8 +11,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
-import { ArrowLeftToLine, Pencil } from "lucide-react";
 
 export const InputVirtualKeyboard: FC<{
   value?: number;

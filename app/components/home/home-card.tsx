@@ -1,4 +1,6 @@
+import { ChevronRight } from "lucide-react";
 import type { FC } from "react";
+import { Link } from "react-router";
 import {
   Card,
   CardContent,
@@ -7,8 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "react-router";
-import { ChevronRight } from "lucide-react";
 
 export const HomeCard: FC<{
   title: string;

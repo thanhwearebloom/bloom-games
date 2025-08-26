@@ -1,6 +1,5 @@
-import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -15,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface TypeaheadProps {
   items: string[];
@@ -47,7 +47,7 @@ export function Typeahead({
 
   // Filter items based on input
   const filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(inputValue.toLowerCase())
+    item.toLowerCase().includes(inputValue.toLowerCase()),
   );
 
   const handleSelect = (selectedValue: string) => {
@@ -104,7 +104,7 @@ export function Typeahead({
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          inputValue === item ? "opacity-100" : "opacity-0"
+                          inputValue === item ? "opacity-100" : "opacity-0",
                         )}
                       />
                       {item}

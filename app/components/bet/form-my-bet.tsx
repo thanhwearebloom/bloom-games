@@ -1,13 +1,10 @@
-import type { FC } from "react";
-import { useNavigation, useSubmit } from "react-router";
-import { InputVirtualKeyboard } from "../shared/input-virtual-keyboard";
-import { Button } from "@/components/ui/button";
-import { ArrowUp, Loader, Trash } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowUp, Loader, Trash } from "lucide-react";
+import type { FC } from "react";
 import { useForm } from "react-hook-form";
-import { Form as RRForm } from "react-router";
+import { Form as RRForm, useNavigation, useSubmit } from "react-router";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,6 +13,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { InputVirtualKeyboard } from "../shared/input-virtual-keyboard";
 
 export const formSchema = z.object({
   team: z.enum(["A", "B"], "Team is required"),

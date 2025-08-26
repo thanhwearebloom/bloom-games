@@ -6,15 +6,7 @@ import {
   getDocs,
   Timestamp,
 } from "firebase/firestore";
-import type { Route } from "./+types/_id_records";
-import type { TienLenGameRecord } from "~/types/db-types";
-import { Collections, db } from "~/firebase";
-import {
-  Form,
-  redirect,
-  useNavigation,
-  useRouteLoaderData,
-} from "react-router";
+import { Form, useNavigation, useRouteLoaderData } from "react-router";
 import {
   Table,
   TableBody,
@@ -26,11 +18,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PaybackInfo } from "~/components/shared/payback-info";
-import type { clientLoader as tienLenIdLoader } from "./_id";
 import { TienLenDeleteRecord } from "~/components/tien-len/delete-record";
-import { payback } from "~/lib/payback";
 import { TienLenFormCreateRecord } from "~/components/tien-len/form-create-record";
 import { Button } from "~/components/ui/button";
+import { Collections, db } from "~/firebase";
+import { payback } from "~/lib/payback";
+import type { TienLenGameRecord } from "~/types/db-types";
+import type { clientLoader as tienLenIdLoader } from "./_id";
+import type { Route } from "./+types/_id_records";
 
 export async function clientAction({
   params,
@@ -75,7 +70,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     })
     .sort(
       (a, b) =>
-        a.createdAt?.toDate().getTime() - b.createdAt?.toDate().getTime()
+        a.createdAt?.toDate().getTime() - b.createdAt?.toDate().getTime(),
     );
   return {
     records,
@@ -89,28 +84,36 @@ export default function TienLenIdRecords({ loaderData }: Route.ComponentProps) {
   const game = parentLoaderData?.game;
   const sumPlayerA = records.reduce(
     (acc, record) => acc + (record.playerA || 0),
-    0
+    0,
   );
   const sumPlayerB = records.reduce(
     (acc, record) => acc + (record.playerB || 0),
-    0
+    0,
   );
   const sumPlayerC = records.reduce(
     (acc, record) => acc + (record.playerC || 0),
-    0
+    0,
   );
   const sumPlayerD = records.reduce(
     (acc, record) => acc + (record.playerD || 0),
-    0
+    0,
   );
-  const paybackInfo = payback({
-    [game?.settings?.playerA ?? ""]: sumPlayerA,
-    [game?.settings?.playerB ?? ""]: sumPlayerB,
-    [game?.settings?.playerC ?? ""]: sumPlayerC,
-    [game?.settings?.playerD ?? ""]: sumPlayerD,
-  });
+  const paybackInfo =
+    game?.type === "TienLen"
+      ? payback({
+          [game?.settings?.playerA ?? ""]: sumPlayerA,
+          [game?.settings?.playerB ?? ""]: sumPlayerB,
+          [game?.settings?.playerC ?? ""]: sumPlayerC,
+          [game?.settings?.playerD ?? ""]: sumPlayerD,
+        })
+      : undefined;
   const navigation = useNavigation();
+
   if (!game) {
+    return null;
+  }
+
+  if (game.type !== "TienLen") {
     return null;
   }
 
@@ -190,9 +193,11 @@ export default function TienLenIdRecords({ loaderData }: Route.ComponentProps) {
           />
         </div>
       ) : (
-        <div className="mt-5">
-          <PaybackInfo paybackInfo={paybackInfo} />
-        </div>
+        paybackInfo && (
+          <div className="mt-5">
+            <PaybackInfo paybackInfo={paybackInfo} unit="K" />
+          </div>
+        )
       )}
     </>
   );

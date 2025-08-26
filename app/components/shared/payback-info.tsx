@@ -1,9 +1,12 @@
-import type { FC } from "react";
-import type { Payback } from "~/lib/payback";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign } from "lucide-react";
+import type { FC } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Payback } from "~/lib/payback";
 
-export const PaybackInfo: FC<{ paybackInfo: Payback }> = ({ paybackInfo }) => {
+export const PaybackInfo: FC<{ paybackInfo: Payback; unit?: string }> = ({
+  paybackInfo,
+  unit,
+}) => {
   const entries = Array.from(paybackInfo.entries());
   return (
     <Card>
@@ -19,7 +22,8 @@ export const PaybackInfo: FC<{ paybackInfo: Payback }> = ({ paybackInfo }) => {
               <div key={debtor.player}>
                 <b className="font-bold">{debtor.player}</b> pay{" "}
                 <b className="font-bold text-red-500">{collector}</b>:{" "}
-                {debtor.amount}K
+                {debtor.amount}
+                {unit}
               </div>
             ))}
           </div>

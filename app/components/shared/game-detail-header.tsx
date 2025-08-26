@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import type { Game } from "~/types/db-types";
 import { Badge } from "@/components/ui/badge";
+import type { Game } from "~/types/db-types";
 
 export const GameDetailHeader: FC<{ game: Game }> = ({ game }) => {
   return (

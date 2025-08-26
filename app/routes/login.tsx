@@ -1,9 +1,9 @@
 import {
   GoogleAuthProvider,
+  getAuth,
   signInWithPopup,
   signInWithRedirect,
 } from "firebase/auth";
-import { getAuth } from "firebase/auth";
 import { isRouteErrorResponse, redirect } from "react-router";
 import type { Route } from "./+types/login";
 

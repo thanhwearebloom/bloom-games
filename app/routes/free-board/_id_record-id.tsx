@@ -1,8 +1,7 @@
-import type { Route } from "./+types/_id_record-id";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "~/firebase";
-import { Collections } from "~/firebase";
+import { Collections, db } from "~/firebase";
 import type { FreeBoardPlayer } from "~/types/db-types";
+import type { Route } from "./+types/_id_record-id";
 
 export async function clientAction({
   request,

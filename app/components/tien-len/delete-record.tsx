@@ -1,7 +1,7 @@
-import { useCallback, type FC } from "react";
-import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
+import { type FC, useCallback } from "react";
 import { useFetcher, useRevalidator } from "react-router";
+import { Button } from "@/components/ui/button";
 
 export const TienLenDeleteRecord: FC<{ id: string; recordId: string }> = ({
   id,
@@ -15,7 +15,7 @@ export const TienLenDeleteRecord: FC<{ id: string; recordId: string }> = ({
       {
         method: "delete",
         action: `/tien-len/${id}/${recordId}`,
-      }
+      },
     );
     revalidator.revalidate();
   }, [id, recordId, fetcher, revalidator]);

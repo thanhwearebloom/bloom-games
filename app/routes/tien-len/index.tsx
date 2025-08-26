@@ -1,9 +1,5 @@
-import { TienLenFormCreate } from "~/components/tien-len/form-create";
-import type { AppHandle } from "~/types/shared-types";
-import type { loader as appShellLoader } from "../app-shell";
-import { redirect, useRouteLoaderData } from "react-router";
-import type { Route } from "./+types/index";
-import type { Game } from "~/types/db-types";
+import { format } from "date-fns";
+import { getAuth } from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -14,10 +10,14 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { Collections, db } from "~/firebase";
+import { redirect, useRouteLoaderData } from "react-router";
 import { GameCard } from "~/components/shared/game-card";
-import { format } from "date-fns";
+import { TienLenFormCreate } from "~/components/tien-len/form-create";
+import { Collections, db } from "~/firebase";
+import type { Game } from "~/types/db-types";
+import type { AppHandle } from "~/types/shared-types";
+import type { loader as appShellLoader } from "../app-shell";
+import type { Route } from "./+types/index";
 
 export const handle = {
   breadcrumb: {
@@ -59,15 +59,15 @@ export async function clientLoader() {
       collectionsRef,
       where("type", "==", "TienLen"),
       limit(30),
-      orderBy("createdAt", "desc")
-    )
+      orderBy("createdAt", "desc"),
+    ),
   );
   const games = collectionDocs.docs.map(
     (doc) =>
       ({
         ...doc.data(),
         id: doc.id,
-      }) as Game
+      }) as Game,
   );
 
   return {
@@ -92,7 +92,7 @@ export default function TienLenIndex({ loaderData }: Route.ComponentProps) {
               key={game.id}
               title={format(
                 game.createdAt?.toDate() ?? new Date(),
-                "dd/MM/yyyy HH:mm:ss"
+                "dd/MM/yyyy HH:mm:ss",
               )}
               description={game.id}
               href={`/tien-len/${game.id}`}

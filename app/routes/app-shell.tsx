@@ -1,6 +1,6 @@
-import { Link, Outlet, useMatches, useRouteLoaderData } from "react-router";
+import { getAuth } from "firebase-admin/auth";
 import { ChevronDown, Home, LogOut } from "lucide-react";
-import type { AppHandle } from "~/types/shared-types";
+import { Link, Outlet, useMatches, useRouteLoaderData } from "react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,15 +9,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { clientLoader as authClientLoader } from "./auth";
-import { getAuth } from "firebase-admin/auth";
+import type { AppHandle } from "~/types/shared-types";
+import type { clientLoader as authClientLoader } from "./auth";
 
 export async function loader() {
   const usersQuery = await getAuth().listUsers();

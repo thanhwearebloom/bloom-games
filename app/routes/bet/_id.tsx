@@ -1,6 +1,4 @@
-import type { AppHandle } from "~/types/shared-types";
-import type { Route } from "./+types/_id";
-import { Collections, db } from "~/firebase";
+import { getAuth } from "firebase/auth";
 import {
   collection,
   doc,
@@ -9,21 +7,15 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import type { BetGameRecord, Game } from "~/types/db-types";
-import { GameDetailHeader } from "~/components/shared/game-detail-header";
+import { LockIcon, UnlockIcon } from "lucide-react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   Outlet,
   useFetcher,
   useRevalidator,
   useRouteLoaderData,
 } from "react-router";
-import { getAuth } from "firebase/auth";
-import { useCallback, useEffect, useRef } from "react";
-import { BetRecord } from "~/components/bet/record";
-import type { loader as appShellLoader } from "../app-shell";
-import type { clientLoader as authClientLoader } from "../auth";
 import { Button } from "@/components/ui/button";
-import { LockIcon, UnlockIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +24,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { BetRecord } from "~/components/bet/record";
+import { GameDetailHeader } from "~/components/shared/game-detail-header";
+import { Collections, db } from "~/firebase";
+import type { BetGameRecord, Game } from "~/types/db-types";
+import type { AppHandle } from "~/types/shared-types";
+import type { loader as appShellLoader } from "../app-shell";
+import type { clientLoader as authClientLoader } from "../auth";
+import type { Route } from "./+types/_id";
 
 export const handle = {
   breadcrumb: {
@@ -59,7 +59,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       ({
         id: doc.id,
         ...doc.data(),
-      }) as BetGameRecord
+      }) as BetGameRecord,
   );
 
   return {
@@ -166,7 +166,7 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
       {
         method: "put",
         encType: "multipart/form-data",
-      }
+      },
     );
   }, []);
 
@@ -180,7 +180,7 @@ export default function BetId({ loaderData }: Route.ComponentProps) {
       {
         method: "put",
         encType: "multipart/form-data",
-      }
+      },
     );
   }, []);
 

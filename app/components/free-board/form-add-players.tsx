@@ -1,9 +1,10 @@
-import type { FC } from "react";
-import { Form as RRForm, useNavigation } from "react-router";
-import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import { Form as RRForm, useNavigation, useSubmit } from "react-router";
+import CreatableSelect from "react-select/creatable";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,13 +14,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import CreatableSelect from "react-select/creatable";
-import { useSubmit } from "react-router";
 
 export const formSchema = z.object({
   players: z.array(
     z.string("Player is required").min(1, "Player is required"),
-    "Players is required"
+    "Players is required",
   ),
 });
 

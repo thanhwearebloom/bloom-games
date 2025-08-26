@@ -1,13 +1,14 @@
-import { Form, useNavigation, useRouteLoaderData } from "react-router";
-import type { loader as appShellLoader } from "../app-shell";
-import { useMemo, useState } from "react";
-import { FreeBoardFormAddPlayers } from "~/components/free-board/form-add-players";
-import type { Route } from "./+types/_id_records";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { Collections, db } from "~/firebase";
-import type { FreeBoardPlayer } from "~/types/db-types";
-import { FreeBoardMemberRecord } from "~/components/free-board/player-record";
+import { Plus } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  Form,
+  useFetchers,
+  useNavigation,
+  useRouteLoaderData,
+} from "react-router";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -15,11 +16,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import type { clientLoader as freeBoardIdLoader } from "./_id";
-import { payback } from "~/lib/payback";
+import { FreeBoardFormAddPlayers } from "~/components/free-board/form-add-players";
 import { PaybackInfo } from "~/components/shared/payback-info";
+import { Collections, db } from "~/firebase";
+import { payback } from "~/lib/payback";
+import type { FreeBoardPlayer } from "~/types/db-types";
+import type { loader as appShellLoader } from "../app-shell";
+import type { clientLoader as freeBoardIdLoader } from "./_id";
+import type { Route } from "./+types/_id_records";
+import { FreeBoardRecords } from "~/components/free-board/records";
 
 export async function clientAction({
   request,
@@ -43,7 +48,7 @@ export async function clientAction({
   await Promise.all(
     newPlayers.map((player) => {
       return addDoc(nestedCollections, player);
-    })
+    }),
   );
 }
 
@@ -60,7 +65,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       ({
         ...doc.data(),
         id: doc.id,
-      }) as FreeBoardPlayer
+      }) as FreeBoardPlayer,
   );
 
   return {
@@ -84,9 +89,15 @@ export default function FreeBoardIdRecords({
       label: user.displayName,
     }));
   }, [users]);
-  const { records } = loaderData;
+  const records = useMemo(() => {
+    return loaderData.records.sort((a, b) => a.player.localeCompare(b.player));
+  }, [loaderData.records]);
   const sum = records.reduce((acc, record) => acc + record.point, 0);
   const navigation = useNavigation();
+  const fetchers = useFetchers();
+  const isAnySubmitting = fetchers.some(
+    (fetcher) => fetcher.state === "loading" || fetcher.state === "submitting",
+  );
   const paybackInfo = payback(
     records.reduce(
       (acc, record) => {
@@ -95,8 +106,8 @@ export default function FreeBoardIdRecords({
         }
         return acc;
       },
-      {} as Record<string, number>
-    )
+      {} as Record<string, number>,
+    ),
   );
 
   if (!game) {
@@ -126,23 +137,26 @@ export default function FreeBoardIdRecords({
         </div>
       )}
       <div className="divide-y divide-accent [&_>*]:py-3">
-        {records
-          .sort((a, b) => a.player.localeCompare(b.player))
-          .map((record) => (
-            <FreeBoardMemberRecord
-              key={record.id}
-              {...record}
-              gameId={params.id}
-              isGameActive={game.isActive ?? false}
-            />
-          ))}
+        <FreeBoardRecords
+          records={records}
+          gameId={params.id}
+          isGameActive={game.isActive ?? false}
+        />
         {records.length === 0 && (
           <p className="text-center text-slate-400">
             No players found. Click "Add Players" to add players.
           </p>
         )}
       </div>
-      {sum !== 0 && (
+      {isAnySubmitting && (
+        <Alert>
+          <AlertTitle>Recalculating...</AlertTitle>
+          <AlertDescription>
+            Please wait while the sum of points is recalculated.
+          </AlertDescription>
+        </Alert>
+      )}
+      {sum !== 0 && !isAnySubmitting && (
         <Alert variant="destructive">
           <AlertTitle>Heads up!</AlertTitle>
           <AlertDescription>
@@ -156,13 +170,13 @@ export default function FreeBoardIdRecords({
             type="submit"
             variant={"destructive"}
             className="w-full"
-            disabled={navigation.state === "submitting"}
+            disabled={navigation.state === "submitting" || isAnySubmitting}
           >
             {navigation.state === "submitting" ? "Ending..." : "End Game"}
           </Button>
         </Form>
       )}
-      {!game.isActive && <PaybackInfo paybackInfo={paybackInfo} />}
+      {!game.isActive && <PaybackInfo paybackInfo={paybackInfo} unit="K" />}
     </div>
   );
 }

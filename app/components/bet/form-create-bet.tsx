@@ -1,7 +1,9 @@
-import type { FC } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import { Form as RRForm, useNavigation, useSubmit } from "react-router";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,8 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Form as RRForm, useNavigation, useSubmit } from "react-router";
 import { Input } from "@/components/ui/input";
 export const formSchema = z.object({
   teamA: z.string("Team A is required").min(1, "Team A is required"),

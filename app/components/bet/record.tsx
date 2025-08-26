@@ -17,7 +17,7 @@ export const BetRecord: FC<{
     <div
       className={cx(
         "rounded-lg p-1 inline-flex items-center justify-between bg-accent gap-2",
-        team === "A" ? "flex-row" : "flex-row-reverse"
+        team === "A" ? "flex-row" : "flex-row-reverse",
       )}
     >
       <span className="font-semibold text-sm">{player}</span>

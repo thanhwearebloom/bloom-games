@@ -1,11 +1,10 @@
-import type { Route } from "./+types/_id";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Collections, db } from "~/firebase";
-import type { Game } from "~/types/db-types";
-import type { TienLenGameSettings } from "~/types/db-types";
 import { Outlet, redirect } from "react-router";
-import type { AppHandle } from "~/types/shared-types";
 import { GameDetailHeader } from "~/components/shared/game-detail-header";
+import { Collections, db } from "~/firebase";
+import type { Game, TienLenGameSettings } from "~/types/db-types";
+import type { AppHandle } from "~/types/shared-types";
+import type { Route } from "./+types/_id";
 
 export const handle = {
   breadcrumb: {

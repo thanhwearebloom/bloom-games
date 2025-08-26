@@ -9,14 +9,14 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
+import { redirect } from "react-router";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormCreateBet } from "~/components/bet/form-create-bet";
+import { GameCard } from "~/components/shared/game-card";
 import { Collections, db } from "~/firebase";
 import type { Game } from "~/types/db-types";
 import type { AppHandle } from "~/types/shared-types";
 import type { Route } from "./+types";
-import { redirect } from "react-router";
-import { GameCard } from "~/components/shared/game-card";
-import { FormCreateBet } from "~/components/bet/form-create-bet";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const handle = {
   breadcrumb: {
@@ -31,15 +31,15 @@ export async function clientLoader() {
       collectionsRef,
       where("type", "==", "Bet"),
       limit(30),
-      orderBy("createdAt", "desc")
-    )
+      orderBy("createdAt", "desc"),
+    ),
   );
   const games = collectionDocs.docs.map(
     (doc) =>
       ({
         ...doc.data(),
         id: doc.id,
-      }) as Game
+      }) as Game,
   );
 
   return {
@@ -96,7 +96,7 @@ export default function BetIndex({ loaderData }: Route.ComponentProps) {
                   href={`/bet/${game.id}`}
                   isActive={game.isActive !== false}
                 />
-              )
+              ),
           )}
         </div>
       </div>

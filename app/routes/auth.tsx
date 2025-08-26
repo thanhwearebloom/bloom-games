@@ -1,6 +1,5 @@
 import { getAuth, getRedirectResult } from "firebase/auth";
-import { Outlet } from "react-router";
-import { redirect } from "react-router";
+import { Outlet, redirect } from "react-router";
 import app from "~/firebase";
 import adminApp from "~/firebase-admin";
 import type { Route } from "./+types/auth";

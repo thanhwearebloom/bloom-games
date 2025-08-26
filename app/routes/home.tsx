@@ -1,10 +1,9 @@
-import type { Route } from "./+types/home";
-import type { AppHandle } from "~/types/shared-types";
 import { HomeCard } from "~/components/home/home-card";
+import type { AppHandle } from "~/types/shared-types";
 
 export const handle = {} satisfies AppHandle;
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "Bloom Games" },
     { name: "description", content: "Welcome to Bloom Games!" },

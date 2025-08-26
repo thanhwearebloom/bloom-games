@@ -1,8 +1,10 @@
-import { useCallback, useMemo, type FC } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { BrushCleaning } from "lucide-react";
+import { type FC, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Form as RRForm, useNavigation, useSubmit } from "react-router";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,8 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { BrushCleaning } from "lucide-react";
 import { InputVirtualKeyboard } from "../shared/input-virtual-keyboard";
 
 export const TienLenFormCreateRecordSchema = z
@@ -130,7 +130,7 @@ export const TienLenFormCreateRecord: FC<{
       form.setValue("playerC", field === "playerC" ? 39 : -13);
       form.setValue("playerD", field === "playerD" ? 39 : -13);
     },
-    [form]
+    [form],
   );
 
   return (
