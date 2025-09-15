@@ -25,7 +25,7 @@ export default [
             route(":recordId", "routes/tien-len/_id_record-id.tsx", {
               id: "tien-len-id-record-id",
             }),
-          ],
+          ]
         ),
       ]),
 
@@ -44,7 +44,7 @@ export default [
             route(":recordId", "routes/free-board/_id_record-id.tsx", {
               id: "free-board-id-record-id",
             }),
-          ],
+          ]
         ),
       ]),
 
@@ -60,7 +60,23 @@ export default [
             index("routes/bet/my-bet.tsx", {
               id: "bet-id-my-bet",
             }),
-          ],
+          ]
+        ),
+      ]),
+
+      route("free-card", "routes/free-card/free-card.tsx", [
+        index("routes/free-card/index.tsx"),
+        route(
+          ":id",
+          "routes/free-card/_id.tsx",
+          {
+            id: "free-card-id",
+          },
+          [
+            index("routes/free-card/_id_records.tsx", {
+              id: "free-card-id-records",
+            }),
+          ]
         ),
       ]),
     ]),

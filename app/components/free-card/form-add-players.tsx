@@ -2,7 +2,7 @@ import { useCallback, type FC } from "react";
 import { useSubmit } from "react-router";
 import { FormAddPlayers, type FormSchema } from "../shared/form-add-players";
 
-export const FreeBoardFormAddPlayers: FC<{
+export const FreeCardFormAddPlayers: FC<{
   users: {
     value: string;
     label: string;

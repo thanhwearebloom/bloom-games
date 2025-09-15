@@ -18,6 +18,10 @@ export type Game = {
       type: "Bet";
       settings?: BetGameSettings;
     }
+  | {
+      type: "FreeCard";
+      settings?: FreeCardGameSettings;
+    }
 );
 
 // ---
@@ -60,4 +64,21 @@ export type BetGameRecord = {
   team: "A" | "B";
   amount: number;
   createdAt: Timestamp;
+};
+
+// ---
+export type FreeCardGameSettings = {};
+
+export type FreeCardGamePlayer = {
+  id: string;
+  player: string;
+};
+
+export type FreeCardGameRecord = {
+  id?: string;
+  createdAt: Timestamp;
+  points: {
+    player: string;
+    point: number;
+  }[];
 };

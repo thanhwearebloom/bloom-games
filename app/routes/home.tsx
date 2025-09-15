@@ -23,6 +23,11 @@ export default function Home() {
         description="Ghi điểm tự do (vd Bi Lắc)"
         href="/free-board"
       />
+      <HomeCard
+        title="Free Card"
+        description="Ghi điểm tự do (Casino)"
+        href="/free-card"
+      />
       <HomeCard title="Bet" description="Đặt cược" href="/bet" />
     </div>
   );
