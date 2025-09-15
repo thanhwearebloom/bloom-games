@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type FC, useMemo } from "react";
+import { type FC, useMemo, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { Form as RRForm, useNavigation, useSubmit } from "react-router";
+import { Form as RRForm, useSubmit } from "react-router";
 import CreatableSelect from "react-select/creatable";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -88,7 +88,7 @@ export const TienLenFormCreate: FC<{
     },
   });
   const submit = useSubmit();
-  const navigation = useNavigation();
+  const [isPending, startTransition] = useTransition();
   const options = useMemo(() => {
     return users.map((user) => ({
       value: user.displayName,
@@ -100,9 +100,11 @@ export const TienLenFormCreate: FC<{
       <RRForm
         method="post"
         onSubmit={form.handleSubmit((values) => {
-          submit(values, {
-            method: "post",
-            encType: "multipart/form-data",
+          startTransition(async () => {
+            await submit(values, {
+              method: "post",
+              encType: "multipart/form-data",
+            });
           });
         })}
       >
@@ -227,12 +229,8 @@ export const TienLenFormCreate: FC<{
             </div>
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full"
-              type="submit"
-              disabled={navigation.state === "submitting"}
-            >
-              {navigation.state === "submitting" ? "Please wait..." : "Start"}
+            <Button className="w-full" type="submit" disabled={isPending}>
+              {isPending ? "Please wait..." : "Start"}
             </Button>
           </CardFooter>
         </Card>
