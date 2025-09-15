@@ -33,36 +33,42 @@ export const TienLenFormSchema = z
       ctx.addIssue({
         code: "custom",
         message: "Player A and Player B cannot be the same",
+        path: ["playerA"],
       });
     }
     if (data.playerA === data.playerC) {
       ctx.addIssue({
         code: "custom",
         message: "Player A and Player C cannot be the same",
+        path: ["playerA"],
       });
     }
     if (data.playerA === data.playerD) {
       ctx.addIssue({
         code: "custom",
         message: "Player A and Player D cannot be the same",
+        path: ["playerA"],
       });
     }
     if (data.playerB === data.playerC) {
       ctx.addIssue({
         code: "custom",
         message: "Player B and Player C cannot be the same",
+        path: ["playerB"],
       });
     }
     if (data.playerB === data.playerD) {
       ctx.addIssue({
         code: "custom",
         message: "Player B and Player D cannot be the same",
+        path: ["playerB"],
       });
     }
     if (data.playerC === data.playerD) {
       ctx.addIssue({
         code: "custom",
         message: "Player C and Player D cannot be the same",
+        path: ["playerC"],
       });
     }
   });
