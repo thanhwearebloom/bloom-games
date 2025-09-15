@@ -20,7 +20,7 @@ export default function Home() {
       />
       <HomeCard
         title="Free Board"
-        description="Ghi điểm tự do"
+        description="Ghi điểm tự do (vd Bi Lắc)"
         href="/free-board"
       />
       <HomeCard title="Bet" description="Đặt cược" href="/bet" />

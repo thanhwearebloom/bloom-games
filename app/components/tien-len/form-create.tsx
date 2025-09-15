@@ -21,12 +21,51 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export const TienLenFormSchema = z.object({
-  playerA: z.string("Player A is required").min(1, "Player A is required"),
-  playerB: z.string("Player B is required").min(1, "Player B is required"),
-  playerC: z.string("Player C is required").min(1, "Player C is required"),
-  playerD: z.string("Player D is required").min(1, "Player D is required"),
-});
+export const TienLenFormSchema = z
+  .object({
+    playerA: z.string("Player A is required").min(1, "Player A is required"),
+    playerB: z.string("Player B is required").min(1, "Player B is required"),
+    playerC: z.string("Player C is required").min(1, "Player C is required"),
+    playerD: z.string("Player D is required").min(1, "Player D is required"),
+  })
+  .superRefine((data, ctx) => {
+    if (data.playerA === data.playerB) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Player A and Player B cannot be the same",
+      });
+    }
+    if (data.playerA === data.playerC) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Player A and Player C cannot be the same",
+      });
+    }
+    if (data.playerA === data.playerD) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Player A and Player D cannot be the same",
+      });
+    }
+    if (data.playerB === data.playerC) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Player B and Player C cannot be the same",
+      });
+    }
+    if (data.playerB === data.playerD) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Player B and Player D cannot be the same",
+      });
+    }
+    if (data.playerC === data.playerD) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Player C and Player D cannot be the same",
+      });
+    }
+  });
 
 type TienLenFormValues = z.infer<typeof TienLenFormSchema>;
 

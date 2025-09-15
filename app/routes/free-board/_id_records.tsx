@@ -1,4 +1,11 @@
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+} from "firebase/firestore";
 import { Loader, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import {
@@ -38,6 +45,9 @@ export async function clientAction({
     throw new Error("Game not found");
   }
   const nestedCollections = collection(gameDocRef, "records");
+  const existingPlayers = await (
+    await getDocs(nestedCollections)
+  ).docs.map((doc) => doc.data().player);
 
   // add players to docs
   const newPlayers = players.map((player) => ({
@@ -47,8 +57,11 @@ export async function clientAction({
 
   await Promise.all(
     newPlayers.map((player) => {
+      if (existingPlayers?.includes(player.player)) {
+        return Promise.resolve();
+      }
       return addDoc(nestedCollections, player);
-    }),
+    })
   );
 }
 
@@ -65,7 +78,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       ({
         ...doc.data(),
         id: doc.id,
-      }) as FreeBoardPlayer,
+      }) as FreeBoardPlayer
   );
 
   return {
@@ -96,7 +109,7 @@ export default function FreeBoardIdRecords({
   const navigation = useNavigation();
   const fetchers = useFetchers();
   const isAnySubmitting = fetchers.some(
-    (fetcher) => fetcher.state === "loading" || fetcher.state === "submitting",
+    (fetcher) => fetcher.state === "loading" || fetcher.state === "submitting"
   );
   const paybackInfo = payback(
     records.reduce(
@@ -106,8 +119,8 @@ export default function FreeBoardIdRecords({
         }
         return acc;
       },
-      {} as Record<string, number>,
-    ),
+      {} as Record<string, number>
+    )
   );
 
   if (!game) {
@@ -130,6 +143,7 @@ export default function FreeBoardIdRecords({
               </DialogHeader>
               <FreeBoardFormAddPlayers
                 users={options}
+                existingPlayers={records.map((record) => record.player)}
                 onSubmit={() => setOpenAddPlayers(false)}
               />
             </DialogContent>
